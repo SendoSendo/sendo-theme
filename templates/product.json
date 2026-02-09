@@ -1,9 +1,0 @@
-{
-  "sections": {
-    "main": {
-      "type": "product-page",
-      "settings": { "color_scheme": "scheme-1" }
-    }
-  },
-  "order": ["main"]
-}
