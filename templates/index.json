@@ -1,0 +1,52 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "heading": "Welcome to Sendo",
+        "subheading": "Discover our collection.",
+        "button_label": "Shop now",
+        "button_link": "shopify://collections/all"
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "frontpage",
+        "title": "Featured products",
+        "products_to_show": 4,
+        "columns": 4,
+        "show_view_all": true,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "rich-text": {
+      "type": "rich-text",
+      "settings": {
+        "heading": "Our story",
+        "text": "<p>We craft quality products for everyday life.</p>",
+        "color_scheme": "scheme-1"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Subscribe",
+        "placeholder": "Your email",
+        "button_label": "Subscribe",
+        "color_scheme": "scheme-2"
+      }
+    }
+  },
+  "order": ["hero", "featured-collection", "rich-text", "newsletter"]
+}

@@ -1,26 +1,35 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "color_schemes": {
       "scheme-1": {
-        "background": "#ffffff",
-        "foreground": "#1a1a1a",
-        "foreground_heading": "#0d0d0d",
-        "primary": "#0f766e",
-        "primary_hover": "#0d5c56",
-        "border": "#e5e7eb"
+        "background": "#0d0f12",
+        "foreground": "#e5e7e7",
+        "foreground_heading": "#ffffff",
+        "primary": "#00ff88",
+        "primary_hover": "#00e676",
+        "border": "rgba(255, 255, 255, 0.08)"
       },
       "scheme-2": {
-        "background": "#0f766e",
-        "foreground": "#ffffff",
+        "background": "#161a22",
+        "foreground": "#e5e7e7",
         "foreground_heading": "#ffffff",
-        "primary": "#ffffff",
-        "primary_hover": "#f0fdfa",
-        "border": "rgba(255,255,255,0.2)"
+        "primary": "#ff6b35",
+        "primary_hover": "#ff8533",
+        "border": "rgba(255, 255, 255, 0.12)"
       }
     },
-    "logo_width": 150,
-    "font_heading": "assistant_n4",
-    "font_body": "assistant_n4",
+    "logo_width": 180,
+    "font_heading": "work_sans_n6",
+    "font_body": "inter_n4",
     "body_font_size": 16,
     "page_width": 1200,
     "animations_enabled": true,
