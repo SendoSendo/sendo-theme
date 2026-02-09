@@ -1,0 +1,37 @@
+<section class="cart section color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    <h1 class="section__title">Cart</h1>
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post">
+        <ul class="cart__items">
+          {%- for item in cart.items -%}
+            <li class="cart__item">
+              {%- if item.image != blank -%}
+                <img src="{{ item.image | image_url: width: 120 }}" alt="{{ item.image.alt | escape }}" width="120" height="{{ 120 | divided_by: item.image.aspect_ratio | round }}" loading="lazy">
+              {%- endif -%}
+              <div>
+                <a href="{{ item.url }}">{{ item.product.title }}</a>
+                {%- unless item.variant.title == 'Default Title' -%}{{ item.variant.title }}{%- endunless -%}
+                <p>{{ item.quantity }} &times; {{ item.final_line_price | money }}</p>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <p class="cart__total"><strong>Total: {{ cart.total_price | money }}</strong></p>
+        <button type="submit" name="checkout" class="button button--primary">Checkout</button>
+      </form>
+    {%- else -%}
+      <p>Your cart is empty.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="button button--secondary">Continue shopping</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme" }
+  ]
+}
+{% endschema %}

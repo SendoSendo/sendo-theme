@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "search-results",
+      "settings": { "color_scheme": "scheme-1" }
+    }
+  },
+  "order": ["main"]
+}

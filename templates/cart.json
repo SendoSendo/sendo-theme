@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "cart-drawer",
+      "settings": { "color_scheme": "scheme-1" }
+    }
+  },
+  "order": ["main"]
+}

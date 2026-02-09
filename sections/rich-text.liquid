@@ -1,0 +1,23 @@
+{%- if section.settings.heading != blank or section.settings.text != blank -%}
+<section class="rich-text section color-{{ section.settings.color_scheme }}" aria-labelledby="rich-text-heading">
+  <div class="page-width rich-text__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 id="rich-text-heading" class="section__title">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <div class="rte">{{ section.settings.text }}</div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme" }
+  ]
+}
+{% endschema %}

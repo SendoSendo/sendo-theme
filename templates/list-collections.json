@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "rich-text",
+      "settings": {
+        "heading": "Collections",
+        "text": "<p><a href=\"/collections/all\">View all products</a></p>",
+        "color_scheme": "scheme-1"
+      }
+    }
+  },
+  "order": ["main"]
+}

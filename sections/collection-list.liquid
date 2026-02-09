@@ -1,0 +1,48 @@
+{%- paginate collection.products by section.settings.products_per_page -%}
+<section class="collection section color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    <h1 class="section__title">{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <div class="rte collection__description">{{ collection.description }}</div>
+    {%- endif -%}
+    {%- if collection.products_count > 0 -%}
+      <ul class="product-grid product-grid--{{ section.settings.columns }}">
+        {%- for product in collection.products -%}
+          <li class="product-grid__item">
+            <article class="product-card">
+              <a href="{{ product.url }}" class="product-card__link"><span class="visually-hidden">{{ product.title }}</span></a>
+              <div class="product-card__media">
+                {%- if product.featured_image != blank -%}
+                  <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" width="500" height="{{ 500 | divided_by: product.featured_image.aspect_ratio | round }}" loading="lazy">
+                {%- endif -%}
+              </div>
+              <div class="product-card__info">
+                <h3 class="product-card__title">{{ product.title }}</h3>
+                {%- render 'price', product: product -%}
+              </div>
+            </article>
+          </li>
+        {%- endfor -%}
+      </ul>
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" aria-label="Pagination">
+          {{ paginate | default_pagination }}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <p>No products in this collection.</p>
+    {%- endif -%}
+  </div>
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Collection list",
+  "settings": [
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 24, "step": 4, "default": 12 },
+    { "type": "range", "id": "columns", "label": "Columns", "min": 2, "max": 4, "step": 1, "default": 4 },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme" }
+  ]
+}
+{% endschema %}

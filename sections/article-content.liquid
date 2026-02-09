@@ -1,0 +1,16 @@
+<article class="article section color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    <h1 class="article__title">{{ article.title }}</h1>
+    <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%B %d, %Y' }}</time>
+    <div class="rte article__body">{{ article.content }}</div>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme" }
+  ]
+}
+{% endschema %}

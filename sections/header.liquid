@@ -1,0 +1,62 @@
+{%- liquid
+  assign menu = section.settings.menu
+  assign show_search = section.settings.show_search
+-%}
+<header class="header" role="banner">
+  <div class="header__inner page-width">
+    <a href="{{ routes.root_url }}" class="header__logo" aria-label="{{ shop.name }}">
+      {%- if settings.logo != blank -%}
+        <img
+          src="{{ settings.logo | image_url: width: 400 }}"
+          alt="{{ shop.name }}"
+          width="{{ settings.logo_width }}"
+          height="{{ settings.logo_width | divided_by: settings.logo.aspect_ratio | round }}"
+          loading="eager"
+          class="header__logo-img"
+        >
+      {%- else -%}
+        <span class="header__logo-text">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+    <nav class="header__nav" aria-label="Main">
+      {%- if menu != blank -%}
+        <ul class="header__menu">
+          {%- for link in linklists[menu].links -%}
+            <li class="header__menu-item">
+              <a href="{{ link.url }}" class="header__link {% if link.active %}header__link--active{% endif %}">{{ link.title }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </nav>
+    <div class="header__actions">
+      {%- if show_search -%}
+        <a href="{{ routes.search_url }}" class="header__action" aria-label="Search">
+          <span aria-hidden="true">Search</span>
+        </a>
+      {%- endif -%}
+      <a href="{{ routes.cart_url }}" class="header__action header__cart" aria-label="Cart ({{ cart.item_count }} items)">
+        Cart ({{ cart.item_count }})
+      </a>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

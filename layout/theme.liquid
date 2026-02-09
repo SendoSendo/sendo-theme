@@ -1,0 +1,28 @@
+<!doctype html>
+<html
+  {% if request.design_mode %}class="shopify-design-mode"{% endif %}
+  lang="{{ request.locale.iso_code }}"
+>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+    {%- render 'meta-tags' -%}
+    {{ content_for_header }}
+    {%- render 'fonts' -%}
+    {%- render 'theme-variables' -%}
+    {%- render 'color-schemes' -%}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+  </head>
+  <body class="sendo-theme {% if settings.animations_enabled %}motion-ok{% endif %} {% if settings.card_hover_lift %}card-lift{% endif %}">
+    {%- render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' -%}
+    {%- section 'header' -%}
+    <main id="MainContent" class="main-content" role="main">
+      {{ content_for_layout }}
+    </main>
+    {%- section 'footer' -%}
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+  </body>
+</html>

@@ -1,0 +1,159 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Sendo",
+    "theme_version": "1.0.0",
+    "theme_author": "Sendo",
+    "theme_documentation_url": "https://shopify.dev/docs/storefronts/themes",
+    "theme_support_url": "https://support.shopify.com/",
+    "role": "main"
+  },
+  {
+    "name": "Logo & favicon",
+    "role": "main",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Logo width",
+        "min": 50,
+        "max": 300,
+        "step": 5,
+        "unit": "px",
+        "default": 150
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "role": "main",
+    "settings": [
+      {
+        "type": "color_scheme_group",
+        "id": "color_schemes",
+        "definition": [
+          {
+            "type": "color",
+            "id": "background",
+            "label": "Background",
+            "default": "#ffffff",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "foreground",
+            "label": "Text",
+            "default": "#1a1a1a",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "foreground_heading",
+            "label": "Headings",
+            "default": "#0d0d0d",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "primary",
+            "label": "Primary (buttons, links)",
+            "default": "#0f766e",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "primary_hover",
+            "label": "Primary hover",
+            "default": "#0d5c56",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "border",
+            "label": "Borders",
+            "default": "#e5e7eb",
+            "alpha": true
+          }
+        ],
+        "role": {
+          "text": "foreground",
+          "background": "background",
+          "links": "primary",
+          "icons": "foreground",
+          "primary_button": "primary",
+          "on_primary_button": "foreground",
+          "primary_button_border": "primary",
+          "secondary_button": "background",
+          "on_secondary_button": "foreground",
+          "secondary_button_border": "border"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "role": "main",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading font",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body font",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "range",
+        "id": "body_font_size",
+        "label": "Body font size",
+        "min": 14,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "default": 16
+      }
+    ]
+  },
+  {
+    "name": "Layout & UX",
+    "role": "main",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "label": "Page max width",
+        "min": 1000,
+        "max": 1600,
+        "step": 20,
+        "unit": "px",
+        "default": 1200
+      },
+      {
+        "type": "checkbox",
+        "id": "animations_enabled",
+        "label": "Enable motion (respects prefers-reduced-motion)",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_hover_lift",
+        "label": "Card hover lift effect",
+        "default": true
+      }
+    ]
+  }
+]

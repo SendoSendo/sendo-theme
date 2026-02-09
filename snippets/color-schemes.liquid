@@ -1,0 +1,13 @@
+{%- for scheme_id in settings.color_schemes -%}
+  {%- assign scheme = settings.color_schemes[scheme_id] -%}
+  <style>
+    .color-{{ scheme_id }} {
+      --color-background: {{ scheme.background }};
+      --color-foreground: {{ scheme.foreground }};
+      --color-foreground-heading: {{ scheme.foreground_heading }};
+      --color-primary: {{ scheme.primary }};
+      --color-primary-hover: {{ scheme.primary_hover }};
+      --color-border: {{ scheme.border }};
+    }
+  </style>
+{%- endfor -%}

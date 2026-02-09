@@ -1,0 +1,17 @@
+{
+  "general": {
+    "pagination": {
+      "page": "Page %s"
+    }
+  },
+  "accessibility": {
+    "skip_to_text": "Skip to main content"
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Your gift card",
+      "subtext": "Here's your gift card!",
+      "shop_link": "Continue shopping"
+    }
+  }
+}

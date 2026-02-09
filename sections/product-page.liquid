@@ -1,0 +1,35 @@
+<section class="product-page section color-{{ section.settings.color_scheme }}">
+  <div class="page-width product-page__grid">
+    <div class="product-page__media">
+      {%- if product.featured_media != blank -%}
+        <img src="{{ product.featured_media | image_url: width: 800 }}" alt="{{ product.featured_media.alt | default: product.title | escape }}" width="800" height="{{ 800 | divided_by: product.featured_media.aspect_ratio | round }}" loading="eager">
+      {%- endif -%}
+    </div>
+    <div class="product-page__info">
+      <h1 class="product-page__title">{{ product.title }}</h1>
+      {%- render 'price', product: product -%}
+      {%- if product.description != blank -%}
+        <div class="rte product-page__description">{{ product.description }}</div>
+      {%- endif -%}
+      {% form 'product', product, class: 'product-form' %}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <div class="product-form__quantity">
+          <label for="quantity">Quantity</label>
+          <input type="number" id="quantity" name="quantity" value="1" min="1" max="99">
+        </div>
+        <button type="submit" name="add" class="button button--primary" {% unless product.available %}disabled{% endunless %}>
+          {%- if product.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
+        </button>
+      {% endform %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "article-content",
+      "settings": { "color_scheme": "scheme-1" }
+    }
+  },
+  "order": ["main"]
+}

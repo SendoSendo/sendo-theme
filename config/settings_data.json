@@ -1,0 +1,29 @@
+{
+  "current": {
+    "color_schemes": {
+      "scheme-1": {
+        "background": "#ffffff",
+        "foreground": "#1a1a1a",
+        "foreground_heading": "#0d0d0d",
+        "primary": "#0f766e",
+        "primary_hover": "#0d5c56",
+        "border": "#e5e7eb"
+      },
+      "scheme-2": {
+        "background": "#0f766e",
+        "foreground": "#ffffff",
+        "foreground_heading": "#ffffff",
+        "primary": "#ffffff",
+        "primary_hover": "#f0fdfa",
+        "border": "rgba(255,255,255,0.2)"
+      }
+    },
+    "logo_width": 150,
+    "font_heading": "assistant_n4",
+    "font_body": "assistant_n4",
+    "body_font_size": 16,
+    "page_width": 1200,
+    "animations_enabled": true,
+    "card_hover_lift": true
+  }
+}
