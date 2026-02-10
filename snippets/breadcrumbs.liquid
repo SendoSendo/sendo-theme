@@ -1,0 +1,90 @@
+{%- comment -%}
+  Breadcrumbs navigation with JSON-LD structured data.
+  Automatically builds breadcrumb trail based on page type.
+  Hidden on homepage.
+
+  Usage: {% render 'breadcrumbs' %}
+{%- endcomment -%}
+
+{%- liquid
+  assign crumbs = ''
+-%}
+
+{%- case request.page_type -%}
+  {%- when 'product' -%}
+    {%- if product.collections.size > 0 -%}
+      {%- assign primary_collection = product.collections.first -%}
+      {%- capture crumbs -%}{{ primary_collection.title }}|{{ primary_collection.url }}||{{ product.title }}|{{ product.url }}{%- endcapture -%}
+    {%- else -%}
+      {%- capture crumbs -%}{{ product.title }}|{{ product.url }}{%- endcapture -%}
+    {%- endif -%}
+
+  {%- when 'collection' -%}
+    {%- capture crumbs -%}{{ collection.title }}|{{ collection.url }}{%- endcapture -%}
+
+  {%- when 'blog' -%}
+    {%- capture crumbs -%}{{ blog.title }}|{{ blog.url }}{%- endcapture -%}
+
+  {%- when 'article' -%}
+    {%- capture crumbs -%}{{ blog.title }}|{{ blog.url }}||{{ article.title }}|{{ article.url }}{%- endcapture -%}
+
+  {%- when 'page' -%}
+    {%- capture crumbs -%}{{ page.title }}|{{ page.url }}{%- endcapture -%}
+
+  {%- when 'search' -%}
+    {%- capture crumbs -%}{{ 'general.search.title' | t | default: 'Search' }}|{{ routes.search_url }}{%- endcapture -%}
+
+  {%- when 'cart' -%}
+    {%- capture crumbs -%}{{ 'general.cart.title' | t | default: 'Cart' }}|{{ routes.cart_url }}{%- endcapture -%}
+{%- endcase -%}
+
+{%- if crumbs != blank -%}
+  {%- assign crumb_items = crumbs | split: '||' -%}
+  {{ 'component-breadcrumbs.css' | asset_url | stylesheet_tag }}
+
+  <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs.label' | t | default: 'Breadcrumbs' }}">
+    <ol class="breadcrumbs__list">
+      <li class="breadcrumbs__item">
+        <a href="{{ routes.root_url }}" class="breadcrumbs__link">{{ 'general.breadcrumbs.home' | t | default: 'Home' }}</a>
+      </li>
+      {%- for crumb_pair in crumb_items -%}
+        {%- assign parts = crumb_pair | split: '|' -%}
+        {%- assign crumb_title = parts[0] | strip -%}
+        {%- assign crumb_url = parts[1] | strip -%}
+        <li class="breadcrumbs__item">
+          <span class="breadcrumbs__sep" aria-hidden="true">{%- render 'util-icon', icon: 'chevron-right', size: 12 -%}</span>
+          {%- if forloop.last -%}
+            <span class="breadcrumbs__current" aria-current="page">{{ crumb_title }}</span>
+          {%- else -%}
+            <a href="{{ crumb_url }}" class="breadcrumbs__link">{{ crumb_title }}</a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+  </nav>
+
+  {%- comment -%}JSON-LD BreadcrumbList{%- endcomment -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": {{ 'general.breadcrumbs.home' | t | default: 'Home' | json }},
+          "item": "{{ shop.url }}{{ routes.root_url }}"
+        }
+        {%- for crumb_pair in crumb_items -%}
+          {%- assign parts = crumb_pair | split: '|' -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ forloop.index | plus: 1 }},
+            "name": {{ parts[0] | strip | json }},
+            "item": "{{ shop.url }}{{ parts[1] | strip }}"
+          }
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}

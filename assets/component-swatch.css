@@ -1,0 +1,151 @@
+/* Sendo — Swatch Component (Color / Size / Style Selectors) */
+
+.swatch-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.swatch-group__label {
+  width: 100%;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-heading);
+  margin-block-end: var(--spacing-xs);
+}
+
+.swatch-group__label span {
+  font-weight: 400;
+  color: var(--color-text);
+  opacity: 0.6;
+}
+
+/* Color swatch */
+.swatch {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease), transform var(--duration-fast) var(--ease);
+  overflow: hidden;
+}
+
+.swatch::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: var(--swatch-color, #ccc);
+}
+
+.swatch:hover {
+  border-color: var(--color-border-strong);
+  transform: scale(1.1);
+}
+
+.swatch.is-selected {
+  border-color: var(--color-heading);
+}
+
+.swatch.is-selected::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+/* Disabled / unavailable */
+.swatch.is-unavailable {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.swatch.is-unavailable::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -2px;
+  right: -2px;
+  height: 1px;
+  background: var(--color-text);
+  transform: rotate(-45deg);
+  opacity: 0.6;
+}
+
+/* Image swatch */
+.swatch--image {
+  border-radius: var(--radius-sm);
+}
+
+.swatch--image::before {
+  display: none;
+}
+
+.swatch--image img {
+  position: absolute;
+  inset: 2px;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+/* Text swatch (for size, style) */
+.swatch--text {
+  width: auto;
+  height: auto;
+  border-radius: var(--radius);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: 1px solid var(--color-border-strong);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  background: transparent;
+}
+
+.swatch--text::before {
+  display: none;
+}
+
+.swatch--text:hover {
+  border-color: var(--color-heading);
+  transform: none;
+}
+
+.swatch--text.is-selected {
+  background: var(--color-heading);
+  color: var(--color-background);
+  border-color: var(--color-heading);
+}
+
+.swatch--text.is-unavailable {
+  text-decoration: line-through;
+  opacity: 0.4;
+}
+
+/* Large swatches (PDP) */
+.swatch-group--lg .swatch {
+  width: 40px;
+  height: 40px;
+}
+
+.swatch-group--lg .swatch--text {
+  width: auto;
+  height: auto;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: var(--font-size-base);
+}
+
+/* Dropdown variant */
+.swatch-dropdown {
+  position: relative;
+}
+
+.swatch-dropdown select {
+  width: 100%;
+}

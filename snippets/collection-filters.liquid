@@ -1,0 +1,197 @@
+{%- comment -%}
+  Collection filters sidebar.
+  Uses Shopify's native collection.filters for faceted filtering.
+
+  Usage: {% render 'collection-filters', filters: collection.filters %}
+{%- endcomment -%}
+
+<form data-filter-form>
+  {%- for filter in filters -%}
+    <details class="accordion__item collection-filter" open>
+      <summary class="accordion__trigger">
+        <span>{{ filter.label }}</span>
+        {%- render 'util-icon', icon: 'chevron-down', size: 14 -%}
+      </summary>
+      <div class="accordion__content">
+
+        {%- case filter.type -%}
+          {%- when 'list' -%}
+            {%- liquid
+              assign filter_label_down = filter.label | downcase
+              assign is_color = false
+              assign is_rating = false
+              if filter_label_down == 'color' or filter_label_down == 'colour' or filter_label_down contains 'color' or filter_label_down contains 'colour'
+                assign is_color = true
+              endif
+              if filter_label_down == 'rating' or filter_label_down contains 'rating'
+                assign is_rating = true
+              endif
+            -%}
+
+            {%- if is_color -%}
+              <ul class="collection-filter__list collection-filter__list--swatches">
+                {%- for value in filter.values -%}
+                  <li class="collection-filter__item">
+                    <label class="collection-filter__swatch{% if value.active %} is-active{% endif %}{% if value.count == 0 and value.active == false %} is-disabled{% endif %}" title="{{ value.label }}">
+                      <input
+                        type="checkbox"
+                        name="{{ value.param_name }}"
+                        value="{{ value.value }}"
+                        {% if value.active %}checked{% endif %}
+                        {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                        data-filter-input
+                        class="visually-hidden"
+                      >
+                      <span class="collection-filter__swatch-color" style="background-color: {{ value.value | handleize | replace: '-', '' }};"></span>
+                    </label>
+                  </li>
+                {%- endfor -%}
+              </ul>
+
+            {%- elsif is_rating -%}
+              <ul class="collection-filter__list collection-filter__list--ratings">
+                {%- for value in filter.values -%}
+                  {%- liquid
+                    assign star_val = value.label | plus: 0
+                  -%}
+                  <li class="collection-filter__item">
+                    <label class="collection-filter__label collection-filter__label--rating">
+                      <input
+                        type="checkbox"
+                        name="{{ value.param_name }}"
+                        value="{{ value.value }}"
+                        {% if value.active %}checked{% endif %}
+                        {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                        data-filter-input
+                      >
+                      <span class="collection-filter__stars" aria-label="{{ star_val }} {{ 'general.product.stars' | t | default: 'stars' }}">
+                        {%- for i in (1..5) -%}
+                          {%- if i <= star_val -%}
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                          {%- else -%}
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                          {%- endif -%}
+                        {%- endfor -%}
+                        <span class="collection-filter__text">&amp; up</span>
+                      </span>
+                      <span class="collection-filter__count">({{ value.count }})</span>
+                    </label>
+                  </li>
+                {%- endfor -%}
+              </ul>
+
+            {%- else -%}
+              <ul class="collection-filter__list">
+                {%- for value in filter.values -%}
+                  <li class="collection-filter__item">
+                    <label class="collection-filter__label">
+                      <input
+                        type="checkbox"
+                        name="{{ value.param_name }}"
+                        value="{{ value.value }}"
+                        {% if value.active %}checked{% endif %}
+                        {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                        data-filter-input
+                      >
+                      <span class="collection-filter__text">{{ value.label }}</span>
+                      <span class="collection-filter__count">({{ value.count }})</span>
+                    </label>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
+          {%- when 'price_range' -%}
+            {%- liquid
+              assign range_max_cents = filter.range_max
+              assign range_max_display = range_max_cents | divided_by: 100
+              assign current_min_display = 0
+              assign current_max_display = range_max_display
+              if filter.min_value.value
+                assign current_min_display = filter.min_value.value | divided_by: 100
+              endif
+              if filter.max_value.value
+                assign current_max_display = filter.max_value.value | divided_by: 100
+              endif
+            -%}
+            <div class="collection-filter__price">
+              {{ 'component-range-slider.css' | asset_url | stylesheet_tag }}
+              <range-slider
+                data-min="0"
+                data-max="{{ range_max_display }}"
+                data-step="1"
+              >
+                <div class="range-slider__values">
+                  <span data-display-min>{{ cart.currency.symbol }}{{ current_min_display }}</span>
+                  <span data-display-max>{{ cart.currency.symbol }}{{ current_max_display }}</span>
+                </div>
+                <div class="range-slider__track" data-range-track>
+                  <div class="range-slider__fill" data-range-fill></div>
+                  <div
+                    class="range-slider__thumb"
+                    data-thumb-min
+                    role="slider"
+                    tabindex="0"
+                    aria-label="{{ 'general.collection.min_price' | t | default: 'Minimum price' }}"
+                    aria-valuemin="0"
+                    aria-valuemax="{{ range_max_display }}"
+                    aria-valuenow="{{ current_min_display }}"
+                  ></div>
+                  <div
+                    class="range-slider__thumb"
+                    data-thumb-max
+                    role="slider"
+                    tabindex="0"
+                    aria-label="{{ 'general.collection.max_price' | t | default: 'Maximum price' }}"
+                    aria-valuemin="0"
+                    aria-valuemax="{{ range_max_display }}"
+                    aria-valuenow="{{ current_max_display }}"
+                  ></div>
+                </div>
+                <div class="range-slider__inputs">
+                  <input
+                    type="hidden"
+                    name="{{ filter.min_value.param_name }}"
+                    {% if filter.min_value.value %}value="{{ filter.min_value.value }}"{% endif %}
+                    data-range-min
+                    data-filter-input
+                  >
+                  <input
+                    type="hidden"
+                    name="{{ filter.max_value.param_name }}"
+                    {% if filter.max_value.value %}value="{{ filter.max_value.value }}"{% endif %}
+                    data-range-max
+                    data-filter-input
+                  >
+                </div>
+              </range-slider>
+              <script src="{{ 'component-range-slider.js' | asset_url }}" defer></script>
+            </div>
+        {%- endcase -%}
+      </div>
+    </details>
+  {%- endfor -%}
+
+  {%- comment -%} Active filters {%- endcomment -%}
+  {%- assign has_active = false -%}
+  {%- for filter in filters -%}
+    {%- if filter.active_values.size > 0 or filter.min_value.value or filter.max_value.value -%}
+      {%- assign has_active = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if has_active -%}
+    <div class="collection-filter__active">
+      {%- for filter in filters -%}
+        {%- for value in filter.active_values -%}
+          <a href="{{ value.url_to_remove }}" class="collection-filter__tag" data-filter-remove>
+            {{ value.label }}
+            {%- render 'util-icon', icon: 'close', size: 10 -%}
+          </a>
+        {%- endfor -%}
+      {%- endfor -%}
+      <a href="{{ collection.url }}" class="collection-filter__clear">{{ 'general.collection.clear_all' | t | default: 'Clear all' }}</a>
+    </div>
+  {%- endif -%}
+</form>

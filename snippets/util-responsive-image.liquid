@@ -1,0 +1,38 @@
+{%- comment -%}
+  Responsive image with srcset and sizes.
+  Usage: {% render 'util-responsive-image', image: product.featured_image, sizes: '(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw', widths: '180,360,540,720,900,1080', aspect_ratio: '1', class: 'card__img', loading: 'lazy' %}
+{%- endcomment -%}
+
+{%- liquid
+  assign widths_array = widths | default: '180,360,540,720,900,1080' | split: ','
+  assign img_sizes = sizes | default: '100vw'
+  assign img_loading = loading | default: 'lazy'
+  assign img_fetchpriority = fetchpriority | default: nil
+  assign img_class = class | default: ''
+  assign img_alt = alt | default: image.alt | escape
+  assign aspect = aspect_ratio | default: nil
+-%}
+
+{%- if image != blank -%}
+  <img
+    {%- if aspect %}
+      style="aspect-ratio: {{ aspect }}; object-fit: cover;"
+    {%- endif %}
+    srcset="
+      {%- for width in widths_array -%}
+        {%- assign w = width | strip | plus: 0 -%}
+        {{ image | image_url: width: w }} {{ w }}w{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    "
+    src="{{ image | image_url: width: 720 }}"
+    sizes="{{ img_sizes }}"
+    alt="{{ img_alt }}"
+    loading="{{ img_loading }}"
+    {%- if img_fetchpriority %} fetchpriority="{{ img_fetchpriority }}"{% endif %}
+    width="{{ image.width }}"
+    height="{{ image.height }}"
+    {%- if img_class != '' %} class="{{ img_class }}"{% endif %}
+  >
+{%- else -%}
+  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+{%- endif -%}

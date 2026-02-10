@@ -1,0 +1,35 @@
+{%- liquid
+  assign color_scheme = section.settings.color_scheme
+-%}
+
+<section
+  class="section main-page color-scheme-{{ color_scheme }}"
+  data-section-id="{{ section.id }}"
+  {% render 'util-section-spacing', padding_top: section.settings.padding_top, padding_bottom: section.settings.padding_bottom %}
+>
+  <div class="page-width">
+    <div class="main-page__inner">
+      <h1 class="main-page__title">{{ page.title }}</h1>
+      {%- if page.content != blank -%}
+        <div class="rte">{{ page.content }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .main-page__inner { max-width: 800px; margin: 0 auto; }
+  .main-page__title { font-family: var(--font-heading); font-size: var(--font-size-2xl); font-weight: 600; color: var(--color-heading); margin-block-end: var(--spacing-lg); }
+</style>
+
+{% schema %}
+{
+  "name": "Page content",
+  "class": "main-page-section",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" }
+  ]
+}
+{% endschema %}

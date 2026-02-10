@@ -1,0 +1,165 @@
+{%- if section.blocks.size > 0 -%}
+  {{ 'component-announcement-bar.css' | asset_url | stylesheet_tag }}
+
+  {%- liquid
+    assign color_scheme = section.settings.color_scheme
+    assign auto_rotate = section.settings.auto_rotate
+    assign speed = section.settings.speed
+  -%}
+
+  <div
+    class="announcement-bar color-scheme-{{ color_scheme }}"
+    role="region"
+    aria-label="{{ 'sections.announcement_bar.label' | t }}"
+    data-section-id="{{ section.id }}"
+  >
+    <div class="page-width">
+      <div class="announcement-bar__inner">
+        {%- if section.settings.show_social -%}
+          <div class="announcement-bar__social hide-mobile">
+            {%- if settings.social_facebook_link != blank -%}
+              <a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener" aria-label="Facebook">
+                {%- render 'util-icon', icon: 'share', size: 16 -%}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        <div class="announcement-bar__messages" data-autoplay="{{ auto_rotate }}" data-speed="{{ speed }}">
+          {%- for block in section.blocks -%}
+            <div
+              class="announcement-bar__message{% if forloop.first %} is-active{% endif %}"
+              {{ block.shopify_attributes }}
+              role="group"
+              aria-roledescription="announcement"
+              aria-label="{{ forloop.index }} / {{ section.blocks.size }}"
+            >
+              {%- if block.settings.link != blank -%}
+                <a href="{{ block.settings.link }}" class="announcement-bar__link">
+              {%- endif -%}
+
+              <p class="announcement-bar__text">
+                {%- if block.settings.icon != 'none' -%}
+                  {%- render 'util-icon', icon: block.settings.icon, size: 16 -%}
+                {%- endif -%}
+                {{ block.settings.text }}
+              </p>
+
+              {%- if block.settings.link != blank -%}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {%- if section.blocks.size > 1 and auto_rotate -%}
+          <div class="announcement-bar__controls hide-mobile">
+            <button class="announcement-bar__nav" data-announcement-prev aria-label="{{ 'accessibility.previous' | t }}">
+              {%- render 'util-icon', icon: 'chevron-left', size: 14 -%}
+            </button>
+            <button class="announcement-bar__nav" data-announcement-next aria-label="{{ 'accessibility.next' | t }}">
+              {%- render 'util-icon', icon: 'chevron-right', size: 14 -%}
+            </button>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_dismiss -%}
+          <button class="announcement-bar__dismiss" data-announcement-dismiss aria-label="{{ 'accessibility.close' | t }}">
+            {%- render 'util-icon', icon: 'close', size: 14 -%}
+          </button>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "class": "announcement-bar-section",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-5"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_rotate",
+      "label": "Auto-rotate announcements",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Change slides every",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "default": 5,
+      "unit": "s"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show social links",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dismiss",
+      "label": "Allow dismiss",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free shipping on orders over $50"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "truck", "label": "Shipping" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "lock", "label": "Secure" },
+            { "value": "return", "label": "Returns" },
+            { "value": "star", "label": "Star" }
+          ],
+          "default": "none"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar",
+      "blocks": [
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "Free shipping on orders over $50",
+            "icon": "truck"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

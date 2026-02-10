@@ -1,0 +1,145 @@
+{%- comment -%}
+  Product card component.
+  Usage: {% render 'product-card', product: product, show_vendor: settings.card_show_vendor, show_secondary_image: settings.card_show_secondary_image, show_quick_buy: settings.card_show_quick_buy, show_swatches: settings.card_show_color_swatches, show_badge: settings.card_show_badge, image_ratio: settings.card_image_ratio, text_alignment: settings.card_text_alignment, lazy: true %}
+{%- endcomment -%}
+
+{%- liquid
+  assign show_vendor = show_vendor | default: settings.card_show_vendor
+  assign show_secondary = show_secondary_image | default: settings.card_show_secondary_image
+  assign show_quick = show_quick_buy | default: settings.card_show_quick_buy
+  assign show_swatches_flag = show_swatches | default: settings.card_show_color_swatches
+  assign show_badge_flag = show_badge | default: settings.card_show_badge
+  assign ratio = image_ratio | default: settings.card_image_ratio
+  assign alignment = text_alignment | default: settings.card_text_alignment
+  assign loading = lazy | default: true
+
+  assign on_sale = false
+  assign sold_out = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+  unless product.available
+    assign sold_out = true
+  endunless
+
+  assign card_class = 'card'
+  if settings.card_hover_lift
+    assign card_class = card_class | append: ' card--lift'
+  endif
+  if alignment == 'center'
+    assign card_class = card_class | append: ' card--text-center'
+  endif
+-%}
+
+<div class="{{ card_class }}">
+  {%- comment -%}Media{%- endcomment -%}
+  <div class="card__media" style="{% if ratio == 'square' %}--card-aspect-ratio: 1;{% elsif ratio == 'portrait' %}--card-aspect-ratio: 2/3;{% elsif ratio == 'landscape' %}--card-aspect-ratio: 3/2;{% endif %}">
+    <a href="{{ product.url }}" aria-label="{{ product.title | escape }}" tabindex="-1">
+      {%- if product.featured_image -%}
+        {%- render 'util-responsive-image',
+          image: product.featured_image,
+          sizes: '(min-width: 992px) 25vw, (min-width: 768px) 33vw, 50vw',
+          widths: '180,360,540,720',
+          loading: loading
+        -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+
+      {%- if show_secondary and product.images.size > 1 -%}
+        <div class="card__media-secondary">
+          {%- render 'util-responsive-image',
+            image: product.images[1],
+            sizes: '(min-width: 992px) 25vw, (min-width: 768px) 33vw, 50vw',
+            widths: '180,360,540,720',
+            loading: 'lazy'
+          -%}
+        </div>
+      {%- endif -%}
+    </a>
+
+    {%- comment -%}Badges{%- endcomment -%}
+    {%- if show_badge_flag -%}
+      <div class="card__badges">
+        {%- if sold_out -%}
+          <span class="badge badge--soldout">{{ 'products.badges.sold_out' | t | default: 'Sold out' }}</span>
+        {%- elsif on_sale -%}
+          {%- liquid
+            assign save_amount = product.compare_at_price | minus: product.price
+            assign save_percent = save_amount | times: 100 | divided_by: product.compare_at_price
+          -%}
+          <span class="badge badge--sale">-{{ save_percent }}%</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%}Quick buy{%- endcomment -%}
+    {%- if show_quick and product.available -%}
+      <div class="card__quick-buy">
+        {%- if product.has_only_default_variant -%}
+          <button
+            class="btn btn--primary btn--sm"
+            data-quick-add
+            data-variant-id="{{ product.first_available_variant.id }}"
+            aria-label="{{ 'products.card.add_to_cart' | t | default: 'Add to cart' }}"
+          >
+            {{ 'products.card.add_to_cart' | t | default: 'Add to cart' }}
+          </button>
+        {%- else -%}
+          <a href="{{ product.url }}" class="btn btn--primary btn--sm">
+            {{ 'products.card.choose_options' | t | default: 'Choose options' }}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%}Content{%- endcomment -%}
+  <div class="card__content">
+    {%- if show_vendor and product.vendor != blank -%}
+      <span class="card__vendor">{{ product.vendor }}</span>
+    {%- endif -%}
+
+    <h3 class="card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    {%- comment -%}Color swatches{%- endcomment -%}
+    {%- if show_swatches_flag -%}
+      {%- for option in product.options_with_values -%}
+        {%- assign option_name = option.name | downcase -%}
+        {%- if option_name == 'color' or option_name == 'colour' -%}
+          <div class="card__swatches">
+            {%- for value in option.values -%}
+              {%- if forloop.index <= 5 -%}
+                <span
+                  class="card__swatch"
+                  style="background-color: {{ value | downcase | replace: ' ', '' }};"
+                  title="{{ value }}"
+                  aria-label="{{ value }}"
+                ></span>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if option.values.size > 5 -%}
+              <span class="card__swatch-more text-xs text-muted">+{{ option.values.size | minus: 5 }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- comment -%}Price{%- endcomment -%}
+    <div class="card__price">
+      <div class="price{% if on_sale %} price--on-sale{% endif %}{% if sold_out %} price--sold-out{% endif %}">
+        {%- if product.price_varies -%}
+          <span class="price__range">{{ 'products.card.from' | t | default: 'From' }} {{ product.price_min | money }}</span>
+        {%- else -%}
+          <span class="price__regular">{{ product.price | money }}</span>
+          {%- if on_sale -%}
+            <span class="price__compare">{{ product.compare_at_price | money }}</span>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>

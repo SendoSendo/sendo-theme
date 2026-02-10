@@ -1,0 +1,47 @@
+{{ 'component-search.css' | asset_url | stylesheet_tag }}
+
+<search-drawer class="search-drawer" id="SearchDrawer" aria-hidden="true">
+  <div class="search-drawer__overlay" data-search-close></div>
+  <div class="search-drawer__container" role="dialog" aria-modal="true" aria-label="{{ 'general.search.title' | t | default: 'Search' }}">
+    <div class="search-drawer__header">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-drawer__form" data-predictive-search-form>
+        <label for="SearchInput" class="visually-hidden">{{ 'general.search.placeholder' | t | default: 'Search' }}</label>
+        <div class="search-drawer__input-wrapper">
+          {%- render 'util-icon', icon: 'search', size: 20 -%}
+          <input
+            type="search"
+            id="SearchInput"
+            name="q"
+            class="search-drawer__input"
+            placeholder="{{ 'general.search.placeholder' | t | default: 'Search products...' }}"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            data-predictive-search-input
+          >
+          <input type="hidden" name="type" value="product">
+        </div>
+      </form>
+      <button class="btn--icon search-drawer__close" data-search-close aria-label="{{ 'accessibility.close' | t | default: 'Close' }}">
+        {%- render 'util-icon', icon: 'close' -%}
+      </button>
+    </div>
+
+    <div class="search-drawer__results" id="PredictiveSearchResults" data-predictive-search-results>
+      <div class="search-drawer__placeholder">
+        <p>{{ 'general.search.start_typing' | t | default: 'Start typing to search...' }}</p>
+      </div>
+    </div>
+  </div>
+</search-drawer>
+
+<script src="{{ 'component-search-drawer.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Search drawer",
+  "class": "search-drawer-section",
+  "settings": []
+}
+{% endschema %}

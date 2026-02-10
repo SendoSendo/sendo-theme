@@ -1,0 +1,81 @@
+/* Sendo — Quantity Selector Component */
+
+.quantity {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.quantity__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease), color var(--duration-fast) var(--ease);
+  flex-shrink: 0;
+}
+
+.quantity__button:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-heading);
+}
+
+.quantity__button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.quantity__button svg {
+  width: 14px;
+  height: 14px;
+}
+
+.quantity__input {
+  width: 48px;
+  height: 40px;
+  border: none;
+  border-inline: 1px solid var(--color-border);
+  background: transparent;
+  text-align: center;
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  color: var(--color-heading);
+  -moz-appearance: textfield;
+  padding: 0;
+}
+
+.quantity__input::-webkit-inner-spin-button,
+.quantity__input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantity__input:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--color-accent);
+}
+
+/* Small variant (for cart items) */
+.quantity--sm .quantity__button {
+  width: 32px;
+  height: 32px;
+}
+
+.quantity--sm .quantity__input {
+  width: 40px;
+  height: 32px;
+  font-size: var(--font-size-sm);
+}
+
+/* Loading state */
+.quantity.is-loading {
+  opacity: 0.5;
+  pointer-events: none;
+}

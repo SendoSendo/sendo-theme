@@ -1,0 +1,59 @@
+/* Sendo — Collection List */
+
+.collection-card {
+  display: block;
+  text-decoration: none;
+  text-align: center;
+}
+
+.collection-card__media {
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  margin-block-end: var(--spacing-md);
+}
+
+.collection-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease);
+}
+
+.collection-card:hover .collection-card__media img {
+  transform: scale(1.05);
+}
+
+.collection-card__media--square { aspect-ratio: 1; }
+.collection-card__media--portrait { aspect-ratio: 3/4; }
+.collection-card__media--landscape { aspect-ratio: 4/3; }
+
+.collection-card__media--circle {
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.collection-card__media .placeholder-svg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+}
+
+.collection-card__title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-heading);
+  margin: 0;
+}
+
+.collection-card:hover .collection-card__title {
+  color: var(--color-accent);
+}
+
+.collection-card__count {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  opacity: 0.6;
+  margin-block-start: var(--spacing-2xs);
+}

@@ -1,52 +1,150 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "hero": {
-      "type": "hero",
+    "slideshow": {
+      "type": "hero-slideshow",
       "settings": {
+        "height": 50,
+        "autoplay_speed": 5,
+        "color_scheme": "scheme-4"
+      },
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "heading": "Welcome to Sendo",
+            "subheading": "Premium Collection",
+            "button_label": "Shop now",
+            "button_link": "shopify:\/\/collections\/all",
+            "text_alignment": "center",
+            "overlay_opacity": 30
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "heading": "New Arrivals",
+            "subheading": "Just Dropped",
+            "button_label": "Explore",
+            "button_link": "shopify:\/\/collections\/all",
+            "text_alignment": "center",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": ["slide_1", "slide_2"]
+    },
+    "value-props": {
+      "type": "value-propositions",
+      "settings": {
+        "show_dividers": true,
+        "color_scheme": "scheme-2",
+        "padding_top": 16,
+        "padding_bottom": 16
+      },
+      "blocks": {
+        "prop_1": {
+          "type": "proposition",
+          "settings": {
+            "icon": "truck",
+            "heading": "Free Shipping",
+            "text": "On orders over $50"
+          }
+        },
+        "prop_2": {
+          "type": "proposition",
+          "settings": {
+            "icon": "return",
+            "heading": "Easy Returns",
+            "text": "30-day return policy"
+          }
+        },
+        "prop_3": {
+          "type": "proposition",
+          "settings": {
+            "icon": "lock",
+            "heading": "Secure Checkout",
+            "text": "100% protected payments"
+          }
+        },
+        "prop_4": {
+          "type": "proposition",
+          "settings": {
+            "icon": "star",
+            "heading": "Top Quality",
+            "text": "Curated products only"
+          }
+        }
+      },
+      "block_order": ["prop_1", "prop_2", "prop_3", "prop_4"]
+    },
+    "category-cards": {
+      "type": "category-cards",
+      "settings": {
+        "title": "Shop by Category",
+        "columns": "4",
+        "card_style": "below_text",
         "color_scheme": "scheme-1",
-        "heading": "Welcome to Sendo",
-        "subheading": "Discover our collection.",
-        "button_label": "Shop now",
-        "button_link": "shopify://collections/all"
+        "padding_top": 40,
+        "padding_bottom": 40
+      },
+      "blocks": {
+        "cat_1": { "type": "category_card", "settings": {} },
+        "cat_2": { "type": "category_card", "settings": {} },
+        "cat_3": { "type": "category_card", "settings": {} },
+        "cat_4": { "type": "category_card", "settings": {} }
+      },
+      "block_order": ["cat_1", "cat_2", "cat_3", "cat_4"]
+    },
+    "deals": {
+      "type": "deals-section",
+      "settings": {
+        "title": "Deal of the Day",
+        "subtitle": "Limited-time offers on top products",
+        "products_to_show": 4,
+        "columns": "4",
+        "color_scheme": "scheme-3",
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
-    "featured-collection": {
+    "featured-collection-1": {
       "type": "featured-collection",
       "settings": {
-        "collection": "frontpage",
-        "title": "Featured products",
-        "products_to_show": 4,
-        "columns": 4,
+        "title": "Best Sellers",
+        "subtitle": "Our most popular products",
+        "products_to_show": 8,
+        "columns": "4",
+        "layout": "grid",
         "show_view_all": true,
-        "color_scheme": "scheme-1"
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
-    "rich-text": {
-      "type": "rich-text",
+    "featured-collection-2": {
+      "type": "featured-collection",
       "settings": {
-        "heading": "Our story",
-        "text": "<p>We craft quality products for everyday life.</p>",
-        "color_scheme": "scheme-1"
+        "title": "New Arrivals",
+        "subtitle": "Fresh picks just for you",
+        "products_to_show": 8,
+        "columns": "4",
+        "layout": "grid",
+        "show_view_all": true,
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
     "newsletter": {
       "type": "newsletter",
       "settings": {
-        "heading": "Subscribe",
-        "placeholder": "Your email",
-        "button_label": "Subscribe",
-        "color_scheme": "scheme-2"
+        "heading": "Stay in the Loop",
+        "text": "Subscribe for exclusive offers, new arrivals, and insider-only discounts.",
+        "color_scheme": "scheme-1",
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     }
   },
-  "order": ["hero", "featured-collection", "rich-text", "newsletter"]
+  "order": ["slideshow", "value-props", "category-cards", "deals", "featured-collection-1", "featured-collection-2", "newsletter"]
 }

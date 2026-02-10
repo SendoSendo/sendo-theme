@@ -1,0 +1,162 @@
+/* Sendo — Scroll Animations & Transitions */
+
+/* Scroll-reveal base: elements start hidden and animate in */
+[data-animate] {
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease),
+              transform var(--duration-slow) var(--ease);
+}
+
+[data-animate].is-visible {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+/* Fade up (default) */
+[data-animate="fade-up"] {
+  transform: translateY(20px);
+}
+
+/* Fade down */
+[data-animate="fade-down"] {
+  transform: translateY(-20px);
+}
+
+/* Fade left */
+[data-animate="fade-left"] {
+  transform: translateX(20px);
+}
+
+/* Fade right */
+[data-animate="fade-right"] {
+  transform: translateX(-20px);
+}
+
+/* Fade (no movement) */
+[data-animate="fade"] {
+  transform: none;
+}
+
+/* Scale up */
+[data-animate="zoom-in"] {
+  transform: scale(0.95);
+}
+
+/* Stagger children — progressive delay */
+[data-animate-stagger] > [data-animate]:nth-child(1) { transition-delay: 0ms; }
+[data-animate-stagger] > [data-animate]:nth-child(2) { transition-delay: 80ms; }
+[data-animate-stagger] > [data-animate]:nth-child(3) { transition-delay: 160ms; }
+[data-animate-stagger] > [data-animate]:nth-child(4) { transition-delay: 240ms; }
+[data-animate-stagger] > [data-animate]:nth-child(5) { transition-delay: 320ms; }
+[data-animate-stagger] > [data-animate]:nth-child(6) { transition-delay: 400ms; }
+[data-animate-stagger] > [data-animate]:nth-child(7) { transition-delay: 480ms; }
+[data-animate-stagger] > [data-animate]:nth-child(8) { transition-delay: 560ms; }
+
+/* Shimmer / skeleton loading */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg,
+    var(--color-surface) 25%,
+    var(--color-surface-hover) 50%,
+    var(--color-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease infinite;
+  border-radius: var(--radius);
+}
+
+.skeleton--text {
+  height: 1em;
+  width: 80%;
+  margin-block-end: var(--spacing-xs);
+}
+
+.skeleton--title {
+  height: 1.5em;
+  width: 60%;
+  margin-block-end: var(--spacing-sm);
+}
+
+.skeleton--image {
+  aspect-ratio: 1;
+  width: 100%;
+}
+
+.skeleton--button {
+  height: 44px;
+  width: 120px;
+}
+
+/* Pulse (for stock indicator, live badge) */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Slide in from side (for drawers) */
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slideInUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* Bounce (for cart icon update) */
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.animate-bounce {
+  animation: bounce 0.3s var(--ease);
+}
+
+/* Marquee / scrolling text */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee__track {
+  display: inline-flex;
+  animation: marquee var(--marquee-duration, 20s) linear infinite;
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+/* Respect user preference */
+@media (prefers-reduced-motion: reduce) {
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .skeleton { animation: none; }
+  .animate-pulse { animation: none; }
+  .animate-bounce { animation: none; }
+  .marquee__track { animation: none; }
+}

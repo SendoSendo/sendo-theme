@@ -1,0 +1,87 @@
+{%- liquid
+  assign menu = section.settings.menu
+  assign color_scheme = section.settings.color_scheme
+-%}
+
+{{ 'component-category-bar.css' | asset_url | stylesheet_tag }}
+
+{%- if menu != blank and linklists[menu].links.size > 0 -%}
+  <nav
+    class="category-bar color-scheme-{{ color_scheme }}"
+    data-section-id="{{ section.id }}"
+    aria-label="{{ 'accessibility.category_navigation' | t | default: 'Category navigation' }}"
+  >
+    <div class="category-bar__inner page-width">
+      {%- if section.settings.show_all_button -%}
+        <button class="category-bar__all-btn" data-all-categories-toggle aria-label="{{ 'general.menu.all_categories' | t | default: 'All categories' }}">
+          {%- render 'util-icon', icon: 'menu', size: 16 -%}
+          <span>{{ 'general.menu.all_categories' | t | default: 'All' }}</span>
+        </button>
+      {%- endif -%}
+
+      <ul class="category-bar__list" role="menubar">
+        {%- for link in linklists[menu].links -%}
+          {%- liquid
+            assign is_highlighted = false
+            for block in section.blocks
+              if block.type == 'highlight_link' and block.settings.menu_title == link.title
+                assign is_highlighted = true
+              endif
+            endfor
+          -%}
+          <li class="category-bar__item" role="none">
+            <a
+              href="{{ link.url }}"
+              class="category-bar__link{% if is_highlighted %} category-bar__link--highlight{% endif %}{% if link.active or link.child_active %} category-bar__link--active{% endif %}"
+              role="menuitem"
+            >
+              {{ link.title }}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </nav>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Category bar",
+  "class": "category-bar-section",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu",
+      "info": "Select a menu to display as the category navigation bar."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_all_button",
+      "label": "Show \"All categories\" button",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-4"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "highlight_link",
+      "name": "Highlight link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_title",
+          "label": "Menu item title",
+          "info": "Enter the exact title of the menu item to highlight (e.g., \"Deals\")."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

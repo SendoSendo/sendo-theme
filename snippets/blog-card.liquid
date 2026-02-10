@@ -1,0 +1,44 @@
+{%- comment -%}
+  Blog post card.
+  Usage: {% render 'blog-card', article: article %}
+{%- endcomment -%}
+
+<article class="blog-card">
+  {%- if article.image -%}
+    <a href="{{ article.url }}" class="blog-card__image">
+      {%- render 'util-responsive-image',
+        image: article.image,
+        widths: '300,400,600,800',
+        sizes: '(min-width: 990px) 33vw, (min-width: 750px) 50vw, 100vw',
+        loading: 'lazy'
+      -%}
+    </a>
+  {%- endif -%}
+  <div class="blog-card__content">
+    <time class="blog-card__date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+      {{ article.published_at | date: '%B %d, %Y' }}
+    </time>
+    <h3 class="blog-card__title">
+      <a href="{{ article.url }}">{{ article.title }}</a>
+    </h3>
+    {%- if article.excerpt_or_content != blank -%}
+      <p class="blog-card__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 120 }}</p>
+    {%- endif -%}
+    <a href="{{ article.url }}" class="blog-card__link">
+      {{ 'general.blog.read_more' | t | default: 'Read more' }}
+      {%- render 'util-icon', icon: 'arrow-right', size: 14 -%}
+    </a>
+  </div>
+</article>
+
+<style>
+  .blog-card__image { display: block; border-radius: var(--radius); overflow: hidden; margin-block-end: var(--spacing-md); aspect-ratio: 3/2; }
+  .blog-card__image img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--duration-slow) var(--ease); }
+  .blog-card:hover .blog-card__image img { transform: scale(1.05); }
+  .blog-card__date { font-size: var(--font-size-xs); color: var(--color-text); opacity: 0.5; text-transform: uppercase; letter-spacing: 0.05em; }
+  .blog-card__title { font-family: var(--font-heading); font-size: var(--font-size-md); font-weight: 600; margin: var(--spacing-xs) 0; }
+  .blog-card__title a { color: var(--color-heading); text-decoration: none; }
+  .blog-card__title a:hover { color: var(--color-accent); }
+  .blog-card__excerpt { font-size: var(--font-size-sm); color: var(--color-text); opacity: 0.7; line-height: 1.6; }
+  .blog-card__link { display: inline-flex; align-items: center; gap: var(--spacing-2xs); font-size: var(--font-size-sm); font-weight: 500; color: var(--color-accent); text-decoration: none; margin-block-start: var(--spacing-sm); }
+</style>

@@ -1,0 +1,129 @@
+{%- comment -%}
+  Product media gallery.
+  Renders product images/videos with thumbnails or stacked/grid layouts.
+
+  Usage:
+  {% render 'product-media-gallery',
+    product: product,
+    current_variant: current_variant,
+    gallery_layout: 'thumbnail',
+    enable_zoom: true,
+    enable_video_autoplay: false
+  %}
+{%- endcomment -%}
+
+{%- liquid
+  assign gallery_layout = gallery_layout | default: 'thumbnail'
+  assign media_count = product.media.size
+-%}
+
+<div class="product-gallery product-gallery--{{ gallery_layout }}" data-product-gallery>
+  {%- comment -%} Main media area {%- endcomment -%}
+  <div class="product-gallery__main" id="ProductGalleryMain">
+    {%- for media in product.media -%}
+      <div
+        class="product-gallery__media{% if forloop.first %} is-active{% endif %}"
+        data-media-id="{{ media.id }}"
+        data-media-type="{{ media.media_type }}"
+        {% if gallery_layout == 'grid-2' %}{% render 'util-animation', animation: 'fade-up', index: forloop.index %}{% endif %}
+      >
+        {%- case media.media_type -%}
+          {%- when 'image' -%}
+            <div class="product-gallery__image{% if enable_zoom %} product-gallery__image--zoom{% endif %}"
+              {% if enable_zoom %}data-zoom data-zoom-src="{{ media | image_url: width: 2000 }}"{% endif %}
+            >
+              {%- render 'util-responsive-image',
+                image: media,
+                widths: '400,600,800,1000,1200',
+                sizes: '(min-width: 990px) 50vw, 100vw',
+                loading: forloop.first | ternary: 'eager', 'lazy',
+                fetchpriority: forloop.first | ternary: 'high', 'auto'
+              -%}
+            </div>
+
+          {%- when 'video' -%}
+            <deferred-media class="deferred-media" data-autoplay="{{ enable_video_autoplay }}">
+              <button class="deferred-media__poster" aria-label="{{ 'accessibility.play_video' | t | default: 'Play video' }}">
+                {%- render 'util-responsive-image',
+                  image: media.preview_image,
+                  widths: '400,600,800',
+                  sizes: '(min-width: 990px) 50vw, 100vw',
+                  loading: 'lazy'
+                -%}
+                <span class="deferred-media__play">
+                  {%- render 'util-icon', icon: 'play', size: 24 -%}
+                </span>
+              </button>
+              <template>
+                {{ media | media_tag: autoplay: enable_video_autoplay, loop: true, controls: true, muted: true }}
+              </template>
+            </deferred-media>
+
+          {%- when 'external_video' -%}
+            <deferred-media class="deferred-media" data-autoplay="{{ enable_video_autoplay }}">
+              <button class="deferred-media__poster" aria-label="{{ 'accessibility.play_video' | t | default: 'Play video' }}">
+                {%- render 'util-responsive-image',
+                  image: media.preview_image,
+                  widths: '400,600,800',
+                  sizes: '(min-width: 990px) 50vw, 100vw',
+                  loading: 'lazy'
+                -%}
+                <span class="deferred-media__play">
+                  {%- render 'util-icon', icon: 'play', size: 24 -%}
+                </span>
+              </button>
+              <template>
+                {{ media | external_video_url: autoplay: true, loop: true, mute: true | external_video_tag }}
+              </template>
+            </deferred-media>
+
+          {%- when 'model' -%}
+            <deferred-media class="deferred-media">
+              <button class="deferred-media__poster" aria-label="{{ 'accessibility.view_3d' | t | default: 'View 3D model' }}">
+                {%- render 'util-responsive-image',
+                  image: media.preview_image,
+                  widths: '400,600,800',
+                  sizes: '(min-width: 990px) 50vw, 100vw',
+                  loading: 'lazy'
+                -%}
+              </button>
+              <template>
+                {{ media | model_viewer_tag: reveal: 'interaction', toggleable: true }}
+              </template>
+            </deferred-media>
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} Thumbnail navigation {%- endcomment -%}
+  {%- if gallery_layout == 'thumbnail' and media_count > 1 -%}
+    <div class="product-gallery__thumbnails" data-product-thumbnails>
+      {%- for media in product.media -%}
+        <button
+          class="product-gallery__thumb{% if forloop.first %} is-active{% endif %}"
+          data-thumbnail
+          data-media-target="{{ media.id }}"
+          aria-label="{{ 'accessibility.go_to_media' | t: index: forloop.index | default: 'Go to media' }} {{ forloop.index }}"
+          aria-current="{{ forloop.first }}"
+        >
+          <img
+            src="{{ media.preview_image | image_url: width: 120 }}"
+            alt="{{ media.alt | default: product.title | escape }}"
+            width="60"
+            height="60"
+            loading="lazy"
+          >
+          {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+            <span class="product-gallery__thumb-badge">{%- render 'util-icon', icon: 'play', size: 10 -%}</span>
+          {%- endif -%}
+        </button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+<script src="{{ 'component-product-gallery.js' | asset_url }}" defer></script>
+{%- if product.media.size > 0 -%}
+  <script src="{{ 'component-deferred-media.js' | asset_url }}" defer></script>
+{%- endif -%}

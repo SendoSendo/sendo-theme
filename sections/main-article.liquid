@@ -1,0 +1,133 @@
+{%- liquid
+  assign color_scheme = section.settings.color_scheme
+-%}
+
+<section
+  class="section main-article color-scheme-{{ color_scheme }}"
+  data-section-id="{{ section.id }}"
+  {% render 'util-section-spacing', padding_top: section.settings.padding_top, padding_bottom: section.settings.padding_bottom %}
+>
+  <div class="page-width">
+    <article class="main-article__inner" itemscope itemtype="https://schema.org/Article">
+      <header class="main-article__header text-center">
+        <time class="main-article__date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}" itemprop="datePublished">
+          {{ article.published_at | date: '%B %d, %Y' }}
+        </time>
+        <h1 class="main-article__title" itemprop="headline">{{ article.title }}</h1>
+        {%- if section.settings.show_author and article.author -%}
+          <p class="main-article__author" itemprop="author">{{ 'general.blog.by_author' | t: author: article.author | default: 'By' | append: ' ' | append: article.author }}</p>
+        {%- endif -%}
+      </header>
+
+      {%- if article.image and section.settings.show_image -%}
+        <div class="main-article__image">
+          {%- render 'util-responsive-image',
+            image: article.image,
+            widths: '600,800,1000,1200',
+            sizes: '(min-width: 990px) 800px, 100vw',
+            loading: 'eager'
+          -%}
+        </div>
+      {%- endif -%}
+
+      <div class="main-article__content rte" itemprop="articleBody">
+        {{ article.content }}
+      </div>
+
+      {%- if section.settings.show_tags and article.tags.size > 0 -%}
+        <div class="main-article__tags">
+          {%- for tag in article.tags -%}
+            <a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="main-article__tag">{{ tag }}</a>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_share -%}
+        <div class="main-article__share">
+          <button class="btn btn--tertiary btn--sm" data-share-button>
+            {%- render 'util-icon', icon: 'share', size: 16 -%}
+            {{ 'general.product.share' | t | default: 'Share' }}
+          </button>
+        </div>
+      {%- endif -%}
+
+      {%- if blog.comments_enabled? -%}
+        <div class="main-article__comments">
+          <h2>{{ 'general.blog.comments' | t | default: 'Comments' }} ({{ article.comments_count }})</h2>
+          {%- for comment in article.comments -%}
+            <div class="comment">
+              <p class="comment__author">{{ comment.author }}</p>
+              <p class="comment__content">{{ comment.content }}</p>
+              <time class="comment__date">{{ comment.created_at | date: '%B %d, %Y' }}</time>
+            </div>
+          {%- endfor -%}
+
+          {%- form 'new_comment', article -%}
+            <h3>{{ 'general.blog.leave_comment' | t | default: 'Leave a comment' }}</h3>
+            {%- if form.errors -%}
+              <div class="form__message form__message--error" role="alert">
+                {{ form.errors | default_errors }}
+              </div>
+            {%- endif -%}
+            {%- if form.posted_successfully? -%}
+              <div class="form__message form__message--success" role="status">
+                <p>{{ 'general.blog.comment_success' | t | default: 'Your comment was posted successfully.' }}</p>
+              </div>
+            {%- endif -%}
+            <div class="form__row">
+              <div class="field">
+                <label for="CommentAuthor" class="form__label">{{ 'general.blog.name' | t | default: 'Name' }}</label>
+                <input type="text" id="CommentAuthor" name="comment[author]" class="field__input" value="{{ form.author }}" required>
+              </div>
+              <div class="field">
+                <label for="CommentEmail" class="form__label">{{ 'general.blog.email' | t | default: 'Email' }}</label>
+                <input type="email" id="CommentEmail" name="comment[email]" class="field__input" value="{{ form.email }}" required>
+              </div>
+            </div>
+            <div class="field">
+              <label for="CommentBody" class="form__label">{{ 'general.blog.message' | t | default: 'Message' }}</label>
+              <textarea id="CommentBody" name="comment[body]" class="field__input" rows="4" required>{{ form.body }}</textarea>
+            </div>
+            <button type="submit" class="btn btn--primary">{{ 'general.blog.post_comment' | t | default: 'Post comment' }}</button>
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+    </article>
+  </div>
+</section>
+
+<style>
+  .main-article__inner { max-width: 800px; margin: 0 auto; }
+  .main-article__header { margin-block-end: var(--spacing-xl); }
+  .main-article__date { font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text); opacity: 0.5; }
+  .main-article__title { font-family: var(--font-heading); font-size: var(--font-size-3xl); font-weight: 600; line-height: 1.2; margin: var(--spacing-sm) 0; }
+  .main-article__author { font-size: var(--font-size-sm); color: var(--color-text); opacity: 0.6; }
+  .main-article__image { border-radius: var(--radius-lg); overflow: hidden; margin-block-end: var(--spacing-xl); }
+  .main-article__tags { display: flex; flex-wrap: wrap; gap: var(--spacing-xs); margin-block-start: var(--spacing-xl); padding-block-start: var(--spacing-lg); border-block-start: 1px solid var(--color-border); }
+  .main-article__tag { font-size: var(--font-size-xs); padding: var(--spacing-2xs) var(--spacing-sm); background: var(--color-surface); border-radius: var(--radius-full); color: var(--color-text); text-decoration: none; }
+  .main-article__tag:hover { background: var(--color-border); }
+  .main-article__share { margin-block-start: var(--spacing-md); }
+  .main-article__comments { margin-block-start: var(--spacing-2xl); padding-block-start: var(--spacing-xl); border-block-start: 1px solid var(--color-border); }
+  .comment { padding: var(--spacing-md) 0; border-block-end: 1px solid var(--color-border); }
+  .comment__author { font-weight: 600; font-size: var(--font-size-sm); }
+  .comment__content { font-size: var(--font-size-sm); margin: var(--spacing-xs) 0; }
+  .comment__date { font-size: var(--font-size-xs); opacity: 0.5; }
+  .form__row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); }
+  @media (max-width: 749px) { .form__row { grid-template-columns: 1fr; } }
+</style>
+
+{% schema %}
+{
+  "name": "Article content",
+  "class": "main-article-section",
+  "settings": [
+    { "type": "checkbox", "id": "show_image", "label": "Show featured image", "default": true },
+    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": true },
+    { "type": "checkbox", "id": "show_tags", "label": "Show tags", "default": true },
+    { "type": "checkbox", "id": "show_share", "label": "Show share button", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" }
+  ]
+}
+{% endschema %}

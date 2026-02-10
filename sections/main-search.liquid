@@ -1,0 +1,107 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-badge.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-collection.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign color_scheme = section.settings.color_scheme
+-%}
+
+{%- paginate search.results by section.settings.results_per_page -%}
+<section
+  class="section main-search color-scheme-{{ color_scheme }}"
+  data-section-id="{{ section.id }}"
+  {% render 'util-section-spacing', padding_top: section.settings.padding_top, padding_bottom: section.settings.padding_bottom %}
+>
+  <div class="page-width">
+    <div class="main-search__header text-center">
+      <h1 class="main-search__title">
+        {%- if search.performed -%}
+          {{ 'general.search.results_for' | t: terms: search.terms | default: 'Results for' | append: ' "' | append: search.terms | append: '"' }}
+        {%- else -%}
+          {{ 'general.search.title' | t | default: 'Search' }}
+        {%- endif -%}
+      </h1>
+
+      <form action="{{ routes.search_url }}" method="get" role="search" class="main-search__form">
+        <div class="main-search__input-row">
+          <input type="search" name="q" value="{{ search.terms | escape }}" class="field__input" placeholder="{{ 'general.search.placeholder' | t | default: 'Search products...' }}">
+          <input type="hidden" name="type" value="product">
+          <button type="submit" class="btn btn--primary">
+            {%- render 'util-icon', icon: 'search', size: 18 -%}
+            {{ 'general.search.submit' | t | default: 'Search' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    {%- if search.performed -%}
+      <p class="main-search__count">{{ search.results_count }} {{ 'general.search.results' | t | default: 'results' }}</p>
+
+      {%- if search.results_count > 0 -%}
+        <div class="grid grid--{{ section.settings.columns }}">
+          {%- for result in search.results -%}
+            {%- if result.object_type == 'product' -%}
+              <div>
+                {%- render 'product-card', product: result, lazy: true -%}
+              </div>
+            {%- elsif result.object_type == 'article' -%}
+              <div class="search-result-article">
+                <h3><a href="{{ result.url }}">{{ result.title }}</a></h3>
+                <p>{{ result.content | strip_html | truncate: 120 }}</p>
+              </div>
+            {%- elsif result.object_type == 'page' -%}
+              <div class="search-result-page">
+                <h3><a href="{{ result.url }}">{{ result.title }}</a></h3>
+                <p>{{ result.content | strip_html | truncate: 120 }}</p>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}
+          {%- render 'pagination', paginate: paginate -%}
+        {%- endif -%}
+      {%- else -%}
+        <div class="collection__empty">
+          <p>{{ 'general.search.no_results' | t | default: 'No results found' }}</p>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+{%- endpaginate -%}
+
+<style>
+  .main-search__header { margin-block-end: var(--spacing-xl); }
+  .main-search__title { font-family: var(--font-heading); font-size: var(--font-size-2xl); margin-block-end: var(--spacing-lg); }
+  .main-search__form { max-width: 480px; margin: 0 auto; }
+  .main-search__input-row { display: flex; gap: var(--spacing-sm); }
+  .main-search__input-row .field__input { flex: 1; }
+  .main-search__count { font-size: var(--font-size-sm); color: var(--color-text); opacity: 0.6; margin-block-end: var(--spacing-lg); }
+  .search-result-article, .search-result-page { padding: var(--spacing-md); border: 1px solid var(--color-border); border-radius: var(--radius); }
+  .search-result-article h3, .search-result-page h3 { font-size: var(--font-size-md); margin-block-end: var(--spacing-xs); }
+  .search-result-article h3 a, .search-result-page h3 a { color: var(--color-heading); text-decoration: none; }
+  .search-result-article p, .search-result-page p { font-size: var(--font-size-sm); color: var(--color-text); opacity: 0.7; }
+</style>
+
+{% schema %}
+{
+  "name": "Search results",
+  "class": "main-search-section",
+  "settings": [
+    { "type": "range", "id": "results_per_page", "label": "Results per page", "min": 8, "max": 24, "step": 4, "default": 12 },
+    {
+      "type": "select", "id": "columns", "label": "Columns",
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "4"
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" }
+  ]
+}
+{% endschema %}

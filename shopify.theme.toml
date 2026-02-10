@@ -1,0 +1,21 @@
+# Shopify Theme Environments
+# Usage:
+#   shopify theme dev                           (auto-uses default → dev theme)
+#   shopify theme push                          (auto-pushes to dev theme)
+#   shopify theme push -e production            (pushes to live — needs --allow-live)
+#   shopify theme pull                          (pulls from dev theme)
+
+# Default environment — used when no -e flag is passed
+[environments.default]
+store = "sendo-8829.myshopify.com"
+theme = "185554632986"
+
+# Explicit development environment (same as default)
+[environments.development]
+store = "sendo-8829.myshopify.com"
+theme = "185554632986"
+
+# Production — the live theme
+[environments.production]
+store = "sendo-8829.myshopify.com"
+theme = "185558368538"

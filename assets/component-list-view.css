@@ -1,0 +1,81 @@
+/* Sendo — Collection List View */
+
+.collection__view-toggle {
+  display: inline-flex;
+  gap: 2px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.collection__view-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity var(--duration) ease, background var(--duration) ease;
+}
+
+.collection__view-btn.is-active {
+  opacity: 1;
+  background: var(--color-surface);
+}
+
+.collection__view-btn:hover {
+  opacity: 0.8;
+}
+
+/* List view overrides */
+.collection__products--list-view .grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.collection__products--list-view .grid > * {
+  width: 100%;
+}
+
+.collection__products--list-view .product-card {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+.collection__products--list-view .product-card__image-wrapper {
+  aspect-ratio: 1;
+}
+
+.collection__products--list-view .product-card__info {
+  padding: var(--spacing-md) 0;
+}
+
+.collection__products--list-view .product-card__title {
+  font-size: var(--font-size-lg);
+}
+
+.collection__products--list-view .product-card__description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  opacity: 0.7;
+  margin-block-start: var(--spacing-xs);
+}
+
+@media (max-width: 575px) {
+  .collection__products--list-view .product-card {
+    grid-template-columns: 120px 1fr;
+    gap: var(--spacing-md);
+  }
+}

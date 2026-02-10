@@ -1,0 +1,45 @@
+/* Sendo — RTL Overrides
+ * Most layout already uses logical properties (margin-inline, padding-block, inset-inline-start, etc.)
+ * This file only handles edge cases that can't be expressed with logical CSS.
+ */
+
+[dir="rtl"] {
+  /* Flip select arrow position */
+  select {
+    background-position: left 0.75rem center;
+    padding-inline-end: 0.875rem;
+    padding-inline-start: 2rem;
+  }
+
+  /* Flip spinner rotation direction */
+  .spinner {
+    animation-direction: reverse;
+  }
+
+  /* Flip chevron/arrow icons that don't auto-flip */
+  .icon--chevron-right {
+    transform: scaleX(-1);
+  }
+
+  .icon--chevron-left {
+    transform: scaleX(-1);
+  }
+
+  .icon--arrow-right {
+    transform: scaleX(-1);
+  }
+
+  .icon--arrow-left {
+    transform: scaleX(-1);
+  }
+
+  /* Diagonal strikethrough on unavailable swatches */
+  .swatch.is-unavailable::after {
+    transform: rotate(45deg);
+  }
+
+  /* Marquee direction */
+  .marquee__track {
+    animation-direction: reverse;
+  }
+}

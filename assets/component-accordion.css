@@ -1,0 +1,97 @@
+/* Sendo — Accordion / Details-Disclosure Component */
+
+.accordion {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.accordion__item {
+  border-block-end: 1px solid var(--color-border);
+}
+
+.accordion__item:last-child {
+  border-block-end: none;
+}
+
+.accordion__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  color: var(--color-heading);
+  text-align: start;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease);
+}
+
+.accordion__trigger:hover {
+  background-color: var(--color-surface);
+}
+
+.accordion__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--color-text);
+  opacity: 0.5;
+  transition: transform var(--duration) var(--ease);
+}
+
+.accordion__item[open] .accordion__icon {
+  transform: rotate(180deg);
+}
+
+.accordion__content {
+  padding: 0 var(--spacing-lg) var(--spacing-lg);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+/* Borderless variant */
+.accordion--borderless {
+  border: none;
+  border-radius: 0;
+}
+
+.accordion--borderless .accordion__item {
+  border-block-end: 1px solid var(--color-border);
+}
+
+.accordion--borderless .accordion__trigger {
+  padding-inline: 0;
+}
+
+.accordion--borderless .accordion__content {
+  padding-inline: 0;
+}
+
+/* FAQ variant — wider spacing */
+.accordion--faq .accordion__trigger {
+  font-size: var(--font-size-lg);
+  padding-block: var(--spacing-lg);
+}
+
+.accordion--faq .accordion__content {
+  padding-block-end: var(--spacing-lg);
+}
+
+/* Used as native <details> element */
+details.accordion__item summary {
+  list-style: none;
+}
+
+details.accordion__item summary::-webkit-details-marker {
+  display: none;
+}
+
+details.accordion__item summary::marker {
+  display: none;
+}

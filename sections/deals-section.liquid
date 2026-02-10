@@ -1,0 +1,133 @@
+{%- liquid
+  assign color_scheme = section.settings.color_scheme
+  assign collection = collections[section.settings.collection]
+  assign products_to_show = section.settings.products_to_show | default: 4
+  assign columns = section.settings.columns | default: 4
+-%}
+
+{{ 'component-deals.css' | asset_url | stylesheet_tag }}
+{{ 'component-countdown.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="section deals-section color-scheme-{{ color_scheme }}"
+  data-section-id="{{ section.id }}"
+  {% render 'util-section-spacing', padding_top: section.settings.padding_top, padding_bottom: section.settings.padding_bottom %}
+>
+  <div class="page-width">
+    <div class="deals-section__header">
+      <div class="deals-section__title-group">
+        {%- if section.settings.title != blank -%}
+          <h2 class="section-header__title">
+            {%- render 'util-icon', icon: 'star', size: 24 -%}
+            {{ section.settings.title }}
+          </h2>
+        {%- endif -%}
+        {%- if section.settings.subtitle != blank -%}
+          <p class="section-header__subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.end_date != blank -%}
+        <div class="deals-section__countdown">
+          <span class="deals-section__countdown-label">{{ 'general.deals.ends_in' | t | default: 'Ends in' }}:</span>
+          <countdown-timer
+            class="countdown"
+            data-end-date="{{ section.settings.end_date }}"
+            data-expired-message="{{ section.settings.expired_message | default: 'Sale has ended' | escape }}"
+          >
+            <div class="countdown__items">
+              <div class="countdown__item">
+                <span class="countdown__number" data-days>00</span>
+                <span class="countdown__label">{{ 'general.countdown.days' | t | default: 'Days' }}</span>
+              </div>
+              <span class="countdown__separator">:</span>
+              <div class="countdown__item">
+                <span class="countdown__number" data-hours>00</span>
+                <span class="countdown__label">{{ 'general.countdown.hours' | t | default: 'Hrs' }}</span>
+              </div>
+              <span class="countdown__separator">:</span>
+              <div class="countdown__item">
+                <span class="countdown__number" data-minutes>00</span>
+                <span class="countdown__label">{{ 'general.countdown.minutes' | t | default: 'Min' }}</span>
+              </div>
+              <span class="countdown__separator">:</span>
+              <div class="countdown__item">
+                <span class="countdown__number" data-seconds>00</span>
+                <span class="countdown__label">{{ 'general.countdown.seconds' | t | default: 'Sec' }}</span>
+              </div>
+            </div>
+          </countdown-timer>
+        </div>
+      {%- endif -%}
+
+      {%- if collection != blank -%}
+        <a href="{{ collection.url }}" class="deals-section__view-all btn btn--sm btn--secondary">
+          {{ 'general.collection.view_all' | t | default: 'View all' }}
+          {%- render 'util-icon', icon: 'arrow-right', size: 14 -%}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- if collection != blank and collection.products.size > 0 -%}
+      <div class="deals-section__grid grid grid--{{ columns }}">
+        {%- for product in collection.products limit: products_to_show -%}
+          {%- render 'product-card',
+            product: product,
+            index: forloop.index
+          -%}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p class="deals-section__empty">{{ 'general.deals.no_products' | t | default: 'Select a collection to display deals.' }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+<script src="{{ 'component-countdown.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Deals / Flash sale",
+  "class": "deals-section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Deal of the Day" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Limited-time offers on top products" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    {
+      "type": "range", "id": "products_to_show", "label": "Products to show",
+      "min": 2, "max": 12, "step": 1, "default": 4
+    },
+    {
+      "type": "select", "id": "columns", "label": "Columns",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "header",
+      "content": "Countdown timer"
+    },
+    {
+      "type": "text", "id": "end_date", "label": "End date & time",
+      "info": "ISO 8601 format: YYYY-MM-DDTHH:MM:SS (e.g., 2026-03-15T23:59:59)",
+      "default": ""
+    },
+    {
+      "type": "text", "id": "expired_message", "label": "Expired message",
+      "default": "This sale has ended"
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-3" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" }
+  ],
+  "presets": [
+    {
+      "name": "Deals / Flash sale"
+    }
+  ]
+}
+{% endschema %}

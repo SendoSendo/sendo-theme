@@ -1,0 +1,113 @@
+/* Sendo — Price Component */
+
+.price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  font-family: var(--font-body);
+}
+
+.price__regular {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+/* On sale: current price is the sale price */
+.price--on-sale .price__regular {
+  color: var(--color-badge-sale);
+}
+
+.price__compare {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.price__unit {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  opacity: 0.5;
+}
+
+/* Sale badge inline */
+.price__savings {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-badge-sale);
+  padding: 0.125em 0.5em;
+  background: rgba(231, 76, 60, 0.08);
+  border-radius: var(--radius-sm);
+}
+
+/* Range (collection pages) */
+.price__range {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+/* Sold out */
+.price--sold-out .price__regular {
+  color: var(--color-badge-soldout);
+}
+
+/* Large price (PDP) */
+.price--lg .price__regular {
+  font-size: var(--font-size-2xl);
+}
+
+.price--lg .price__compare {
+  font-size: var(--font-size-lg);
+}
+
+/* Stacked price (for cards) */
+.price--stacked {
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+/* Quantity pricing tiers */
+.price-tiers {
+  display: grid;
+  gap: var(--spacing-xs);
+  margin-block-start: var(--spacing-md);
+}
+
+.price-tier {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  font-size: var(--font-size-sm);
+}
+
+.price-tier.is-active {
+  background: rgba(37, 99, 235, 0.08);
+  outline: 1px solid var(--color-accent);
+}
+
+.price-tier__qty {
+  font-weight: 500;
+}
+
+.price-tier__price {
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+.price-tier__savings {
+  font-size: var(--font-size-xs);
+  color: var(--color-success);
+}
+
+/* Free price */
+.price__free {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-success);
+}

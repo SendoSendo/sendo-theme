@@ -1,18 +1,41 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
-      "type": "product-page",
-      "settings": { "color_scheme": "scheme-1" }
+      "type": "main-product",
+      "settings": {
+        "media_position": "start",
+        "gallery_layout": "thumbnail",
+        "enable_zoom": true,
+        "color_scheme": "scheme-1"
+      },
+      "blocks": {
+        "title": { "type": "title", "settings": { "show_vendor": true } },
+        "rating": { "type": "rating_summary" },
+        "price": { "type": "price", "settings": { "show_tax_note": true } },
+        "divider_1": { "type": "divider" },
+        "variant_selector": { "type": "variant_selector", "settings": { "style": "buttons", "enable_color_swatches": true } },
+        "quantity": { "type": "quantity_selector" },
+        "buy_buttons": { "type": "buy_buttons", "settings": { "show_dynamic_checkout": true } },
+        "delivery": { "type": "delivery_estimate" },
+        "shipping": { "type": "shipping_info" },
+        "urgency": { "type": "urgency_counter" },
+        "trust": { "type": "trust_badges" },
+        "description": { "type": "description", "settings": { "collapse": true, "heading": "Product Description" } },
+        "shipping_tab": { "type": "collapsible_tab", "settings": { "heading": "Shipping & Returns", "icon": "truck" } },
+        "share": { "type": "share" }
+      },
+      "block_order": ["title", "rating", "price", "divider_1", "variant_selector", "quantity", "buy_buttons", "delivery", "shipping", "urgency", "trust", "description", "shipping_tab", "share"]
+    },
+    "bought-together": {
+      "type": "bought-together",
+      "settings": {
+        "title": "Frequently Bought Together",
+        "max_products": 3,
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
     }
   },
-  "order": ["main"]
+  "order": ["main", "bought-together"]
 }

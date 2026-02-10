@@ -1,0 +1,51 @@
+{%- liquid
+  assign color_scheme = section.settings.color_scheme
+  assign show_image = section.settings.show_image
+  assign image_height = section.settings.image_height
+  assign overlay_opacity = section.settings.overlay_opacity
+  assign show_description = section.settings.show_description
+-%}
+
+{{ 'component-collection-banner.css' | asset_url | stylesheet_tag }}
+
+{%- if collection != blank -%}
+<section
+  class="section collection-banner color-scheme-{{ color_scheme }}"
+  data-section-id="{{ section.id }}"
+  {% render 'util-section-spacing', padding_top: section.settings.padding_top, padding_bottom: section.settings.padding_bottom %}
+>
+  <div class="collection-banner__inner{% if show_image and collection.image %} collection-banner__inner--has-image{% endif %}"
+    {% if show_image and collection.image %}
+      style="min-height: {{ image_height }}px; background-image: url('{{ collection.image | image_url: width: 1920 }}');"
+    {% endif %}
+  >
+    {%- if show_image and collection.image -%}
+      <div class="collection-banner__overlay" style="opacity: {{ overlay_opacity | divided_by: 100.0 }};"></div>
+    {%- endif -%}
+
+    <div class="collection-banner__content page-width">
+      <h1 class="collection-banner__title">{{ collection.title }}</h1>
+      {%- if show_description and collection.description != blank -%}
+        <div class="collection-banner__description rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection banner",
+  "class": "collection-banner-section",
+  "settings": [
+    { "type": "checkbox", "id": "show_image", "label": "Show collection image", "default": true },
+    { "type": "range", "id": "image_height", "label": "Image height", "min": 100, "max": 500, "step": 20, "default": 300, "unit": "px" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 80, "step": 5, "default": 40 },
+    { "type": "checkbox", "id": "show_description", "label": "Show collection description", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "default": 0, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "default": 0, "unit": "px" }
+  ],
+  "templates": ["collection"]
+}
+{% endschema %}

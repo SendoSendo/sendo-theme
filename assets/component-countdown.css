@@ -1,0 +1,103 @@
+/* Sendo — Countdown Timer Component */
+
+.countdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+}
+
+.countdown__block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.countdown__number {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-heading);
+  min-width: 2ch;
+  text-align: center;
+}
+
+.countdown__label {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text);
+  opacity: 0.6;
+}
+
+.countdown__separator {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-heading);
+  opacity: 0.3;
+  align-self: flex-start;
+  padding-block-start: 0.1em;
+}
+
+/* Card variant (boxed digits) */
+.countdown--card .countdown__number {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding: var(--spacing-sm) var(--spacing-md);
+  min-width: 60px;
+}
+
+/* Inline variant (for announcement bar) */
+.countdown--inline {
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+}
+
+.countdown--inline .countdown__block {
+  flex-direction: row;
+  gap: 2px;
+}
+
+.countdown--inline .countdown__number {
+  font-size: inherit;
+  font-family: var(--font-body);
+  font-weight: 700;
+}
+
+.countdown--inline .countdown__label {
+  font-size: inherit;
+  text-transform: lowercase;
+  letter-spacing: normal;
+}
+
+.countdown--inline .countdown__separator {
+  font-size: inherit;
+  align-self: center;
+  padding: 0;
+}
+
+/* Compact variant */
+.countdown--compact .countdown__number {
+  font-size: var(--font-size-xl);
+}
+
+/* Urgent state (< 1 hour) */
+.countdown.is-urgent .countdown__number {
+  color: var(--color-badge-sale);
+}
+
+/* Expired state */
+.countdown.is-expired {
+  opacity: 0.5;
+}
+
+/* Accent colored */
+.countdown--accent .countdown__number {
+  color: var(--color-accent);
+}
+
+.countdown--accent.countdown--card .countdown__number {
+  background: rgba(37, 99, 235, 0.08);
+}

@@ -1,0 +1,135 @@
+{{ 'component-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-badge.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{%- if section.settings.enable_view_toggle -%}
+  {{ 'component-list-view.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+{%- liquid
+  assign color_scheme = section.settings.color_scheme
+  assign columns = section.settings.columns
+  assign products_per_page = section.settings.products_per_page
+  assign show_filters = section.settings.show_filters
+  assign show_sort = section.settings.show_sort
+-%}
+
+{%- paginate collection.products by products_per_page -%}
+<section
+  class="section main-collection color-scheme-{{ color_scheme }}"
+  data-section-id="{{ section.id }}"
+  {% render 'util-section-spacing', padding_top: section.settings.padding_top, padding_bottom: section.settings.padding_bottom %}
+>
+  <div class="page-width">
+
+    {%- comment -%} Collection header {%- endcomment -%}
+    <div class="collection__header">
+      <div>
+        <h1 class="collection__title">{{ collection.title }}</h1>
+        {%- if section.settings.show_description and collection.description != blank -%}
+          <div class="collection__description rte">{{ collection.description }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} Toolbar: filter toggle + sort + count {%- endcomment -%}
+    <div class="collection__toolbar" id="CollectionToolbar">
+      <div class="collection__toolbar-start">
+        {%- if show_filters and collection.filters.size > 0 -%}
+          <button class="btn btn--tertiary btn--sm collection__filter-toggle" data-filter-toggle aria-expanded="false" aria-controls="CollectionFilters">
+            {%- render 'util-icon', icon: 'filter', size: 16 -%}
+            {{ 'general.collection.filter' | t | default: 'Filter' }}
+            {%- assign active_count = 0 -%}
+            {%- for filter in collection.filters -%}
+              {%- assign active_count = active_count | plus: filter.active_values.size -%}
+            {%- endfor -%}
+            {%- if active_count > 0 -%}
+              <span class="collection__filter-count">{{ active_count }}</span>
+            {%- endif -%}
+          </button>
+        {%- endif -%}
+        <p class="collection__count">{{ 'general.collection.product_count' | t: count: collection.products_count | default: collection.products_count | append: ' products' }}</p>
+      </div>
+
+      <div class="collection__toolbar-end">
+        {%- if section.settings.enable_view_toggle -%}
+          <div class="collection__view-toggle" data-view-toggle>
+            <button class="collection__view-btn is-active" data-view-btn="grid" aria-label="{{ 'general.collection.grid_view' | t | default: 'Grid view' }}">
+              {%- render 'util-icon', icon: 'grid', size: 16 -%}
+            </button>
+            <button class="collection__view-btn" data-view-btn="list" aria-label="{{ 'general.collection.list_view' | t | default: 'List view' }}">
+              {%- render 'util-icon', icon: 'list', size: 16 -%}
+            </button>
+          </div>
+        {%- endif -%}
+        {%- if show_sort -%}
+          {%- render 'collection-sort' -%}
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="collection__layout{% if show_filters and collection.filters.size > 0 %} collection__layout--has-filters{% endif %}">
+
+      {%- comment -%} Filters sidebar {%- endcomment -%}
+      {%- if show_filters and collection.filters.size > 0 -%}
+        <aside class="collection__filters" id="CollectionFilters" aria-label="{{ 'general.collection.filters' | t | default: 'Filters' }}">
+          {%- render 'collection-filters', filters: collection.filters -%}
+        </aside>
+      {%- endif -%}
+
+      {%- comment -%} Product grid {%- endcomment -%}
+      <div class="collection__products" id="CollectionProducts">
+        {%- if collection.products.size > 0 -%}
+          <div class="grid grid--{{ columns }}" data-animate-stagger id="CollectionGrid">
+            {%- for product in collection.products -%}
+              <div {% render 'util-animation', animation: 'fade-up', index: forloop.index %}>
+                {%- render 'product-card', product: product, lazy: true -%}
+              </div>
+            {%- endfor -%}
+          </div>
+
+          {%- comment -%} Pagination {%- endcomment -%}
+          {%- if paginate.pages > 1 -%}
+            {%- render 'pagination', paginate: paginate -%}
+          {%- endif -%}
+        {%- else -%}
+          <div class="collection__empty">
+            <p>{{ 'general.collection.empty' | t | default: 'No products found' }}</p>
+            {%- if active_count > 0 -%}
+              <a href="{{ collection.url }}" class="btn btn--secondary">{{ 'general.collection.clear_filters' | t | default: 'Clear filters' }}</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- endpaginate -%}
+
+<script src="{{ 'component-facets.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Collection products",
+  "class": "main-collection-section",
+  "settings": [
+    { "type": "checkbox", "id": "show_description", "label": "Show collection description", "default": true },
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 36, "step": 4, "default": 16 },
+    {
+      "type": "select", "id": "columns", "label": "Columns",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "4"
+    },
+    { "type": "checkbox", "id": "show_filters", "label": "Show filters", "default": true },
+    { "type": "checkbox", "id": "show_sort", "label": "Show sort", "default": true },
+    { "type": "checkbox", "id": "enable_view_toggle", "label": "Enable grid/list toggle", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" }
+  ]
+}
+{% endschema %}

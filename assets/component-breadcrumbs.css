@@ -1,0 +1,55 @@
+/* Sendo — Breadcrumbs */
+
+.breadcrumbs-wrapper {
+  padding-block: var(--spacing-sm);
+}
+
+.breadcrumbs__list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-2xs);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumbs__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+}
+
+.breadcrumbs__link {
+  font-size: var(--font-size-xs);
+  color: var(--color-text);
+  opacity: 0.6;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.breadcrumbs__link:hover {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.breadcrumbs__sep {
+  display: inline-flex;
+  opacity: 0.3;
+}
+
+.breadcrumbs__current {
+  font-size: var(--font-size-xs);
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+@media (max-width: 575px) {
+  .breadcrumbs__current {
+    max-width: 120px;
+  }
+}

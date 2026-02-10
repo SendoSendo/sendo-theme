@@ -1,0 +1,83 @@
+{%- comment -%}
+  Star rating display.
+  Renders 5 stars (filled, half, empty) with optional review count.
+
+  Usage:
+  {% render 'star-rating', rating: 4.5, count: 127, show_count: true %}
+{%- endcomment -%}
+
+{%- liquid
+  assign rating = rating | default: 0 | times: 1.0
+  assign count = count | default: 0
+  assign show_count = show_count | default: true
+  assign rating_floor = rating | floor
+  assign rating_decimal = rating | minus: rating_floor
+  assign has_half = false
+  if rating_decimal >= 0.25 and rating_decimal < 0.75
+    assign has_half = true
+  endif
+  assign filled_stars = rating_floor
+  if rating_decimal >= 0.75
+    assign filled_stars = filled_stars | plus: 1
+  endif
+-%}
+
+{%- if rating > 0 -%}
+  <div class="star-rating" role="img" aria-label="{{ 'general.product.rating' | t | default: 'Rating' }}: {{ rating }} {{ 'general.product.out_of_5' | t | default: 'out of 5' }}">
+    <div class="star-rating__stars">
+      {%- for i in (1..5) -%}
+        {%- if i <= filled_stars -%}
+          <svg class="star-rating__star star-rating__star--filled" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        {%- elsif has_half and i == filled_stars | plus: 1 -%}
+          <svg class="star-rating__star star-rating__star--half" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+            <defs>
+              <linearGradient id="half-star-{{ section.id }}-{{ i }}">
+                <stop offset="50%" stop-color="currentColor"/>
+                <stop offset="50%" stop-color="transparent"/>
+              </linearGradient>
+            </defs>
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#half-star-{{ section.id }}-{{ i }})" stroke="currentColor" stroke-width="1"/>
+          </svg>
+        {%- else -%}
+          <svg class="star-rating__star star-rating__star--empty" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- if show_count and count > 0 -%}
+      <span class="star-rating__count">({{ count }})</span>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+<style>
+  .star-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
+  .star-rating__stars {
+    display: inline-flex;
+    gap: 1px;
+  }
+  .star-rating__star--filled {
+    color: #f59e0b;
+  }
+  .star-rating__star--half {
+    color: #f59e0b;
+  }
+  .star-rating__star--empty {
+    color: #d1d5db;
+  }
+  .star-rating__count {
+    font-size: var(--font-size-sm);
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .star-rating__count:hover {
+    text-decoration: underline;
+  }
+</style>

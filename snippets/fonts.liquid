@@ -1,6 +1,17 @@
-{%- if settings.font_heading -%}
-  {{ settings.font_heading | font_face: font_display: 'swap' }}
-{%- endif -%}
-{%- if settings.font_body -%}
-  {{ settings.font_body | font_face: font_display: 'swap' }}
-{%- endif -%}
+{%- comment -%}Font loading — outputs @font-face declarations with swap{%- endcomment -%}
+
+{%- liquid
+  assign header_font = settings.type_header_font
+  assign body_font = settings.type_body_font
+  assign header_font_bold = header_font | font_modify: 'weight', 'bold'
+  assign body_font_bold = body_font | font_modify: 'weight', 'bold'
+  assign body_font_italic = body_font | font_modify: 'style', 'italic'
+-%}
+
+<style>
+  {{ header_font | font_face: font_display: 'swap' }}
+  {{ header_font_bold | font_face: font_display: 'swap' }}
+  {{ body_font | font_face: font_display: 'swap' }}
+  {{ body_font_bold | font_face: font_display: 'swap' }}
+  {{ body_font_italic | font_face: font_display: 'swap' }}
+</style>

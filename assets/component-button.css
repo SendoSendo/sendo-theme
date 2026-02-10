@@ -1,0 +1,156 @@
+/* Sendo — Button Component */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: 0.75rem 1.5rem;
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color var(--duration) var(--ease),
+              color var(--duration) var(--ease),
+              border-color var(--duration) var(--ease),
+              box-shadow var(--duration) var(--ease),
+              transform var(--duration) var(--ease);
+  white-space: nowrap;
+  text-decoration: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Primary — solid background */
+.btn--primary {
+  background-color: var(--color-button);
+  color: var(--color-button-label);
+  border-color: var(--color-button);
+}
+
+.btn--primary:hover {
+  opacity: 0.9;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn--primary:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Secondary — outline */
+.btn--secondary {
+  background-color: transparent;
+  color: var(--color-secondary-button-label);
+  border-color: var(--color-secondary-button-label);
+}
+
+.btn--secondary:hover {
+  background-color: var(--color-secondary-button-label);
+  color: var(--color-button-label);
+}
+
+/* Tertiary — ghost / text */
+.btn--tertiary {
+  background-color: transparent;
+  color: var(--color-secondary-button-label);
+  border-color: transparent;
+  padding-inline: var(--spacing-sm);
+}
+
+.btn--tertiary:hover {
+  color: var(--color-accent);
+}
+
+/* Accent */
+.btn--accent {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  border-color: var(--color-accent);
+}
+
+.btn--accent:hover {
+  opacity: 0.9;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* Sizes */
+.btn--sm {
+  padding: 0.5rem 1rem;
+  font-size: var(--font-size-sm);
+}
+
+.btn--lg {
+  padding: 1rem 2rem;
+  font-size: var(--font-size-lg);
+}
+
+.btn--full {
+  width: 100%;
+}
+
+/* Icon button (square, for close/menu/etc.) */
+.btn--icon {
+  padding: 0.625rem;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  border-radius: var(--radius);
+}
+
+.btn--icon:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.btn--icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Loading state */
+.btn.is-loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.btn.is-loading::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  inset-inline-start: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-button-label);
+}
+
+.btn--secondary.is-loading::after {
+  color: var(--color-secondary-button-label);
+}
+
+/* Button group */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.btn-group--center { justify-content: center; }

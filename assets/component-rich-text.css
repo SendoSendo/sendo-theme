@@ -1,0 +1,39 @@
+/* Sendo — Rich Text */
+
+.rich-text__inner {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.rich-text__inner--narrow { max-width: 560px; }
+.rich-text__inner--medium { max-width: 800px; }
+.rich-text__inner--full { max-width: 100%; }
+
+.rich-text__subtitle {
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  font-weight: 500;
+  margin-block-end: var(--spacing-xs);
+}
+
+.rich-text__heading {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-2xl);
+  font-weight: 600;
+  color: var(--color-heading);
+  margin-block-end: var(--spacing-md);
+}
+
+.rich-text__text {
+  color: var(--color-text);
+  line-height: 1.7;
+  margin-block-end: var(--spacing-lg);
+}
+
+@media (max-width: 749px) {
+  .rich-text__heading {
+    font-size: var(--font-size-xl);
+  }
+}

@@ -1,0 +1,19 @@
+{%- comment -%}
+  Sort dropdown for collection pages.
+  Usage: {% render 'collection-sort' %}
+{%- endcomment -%}
+
+{%- liquid
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+-%}
+
+<div class="collection-sort">
+  <label for="CollectionSort" class="visually-hidden">{{ 'general.collection.sort_by' | t | default: 'Sort by' }}</label>
+  <select id="CollectionSort" class="field__input field__input--sm" data-sort-select>
+    {%- for option in collection.sort_options -%}
+      <option value="{{ option.value }}" {% if sort_by == option.value %}selected{% endif %}>
+        {{ option.name }}
+      </option>
+    {%- endfor -%}
+  </select>
+</div>

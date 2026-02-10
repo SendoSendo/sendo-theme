@@ -1,0 +1,139 @@
+/* Sendo — Mega Menu Component */
+
+.mega-menu {
+  position: absolute;
+  top: 100%;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  z-index: var(--z-header);
+  padding-block-start: var(--spacing-xs);
+}
+
+.mega-menu__inner {
+  display: flex;
+  gap: var(--spacing-xl);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--spacing-xl) var(--spacing-2xl);
+}
+
+.mega-menu__columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--spacing-xl);
+  flex: 1;
+}
+
+.mega-menu__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.mega-menu__heading {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-block-end: var(--spacing-xs);
+  border-block-end: 1px solid var(--color-border);
+  margin-block-end: var(--spacing-xs);
+}
+
+.mega-menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mega-menu__link {
+  display: block;
+  padding: var(--spacing-xs) 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease);
+}
+
+.mega-menu__link:hover,
+.mega-menu__link--active {
+  color: var(--color-accent);
+}
+
+.mega-menu__link--top {
+  font-weight: 500;
+  padding: var(--spacing-sm) 0;
+}
+
+.mega-menu__shop-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-block-start: var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: gap var(--duration-fast) var(--ease);
+}
+
+.mega-menu__shop-all:hover {
+  gap: 8px;
+}
+
+/* Promo panel */
+.mega-menu__promo {
+  width: 220px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.mega-menu__promo-image {
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.mega-menu__promo-heading {
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  color: var(--color-heading);
+}
+
+/* Hover behavior for mega-menu-disclosure */
+mega-menu-disclosure details:not([open]) .mega-menu {
+  display: none;
+}
+
+mega-menu-disclosure details[open] .mega-menu {
+  display: block;
+  animation: megaMenuFadeIn var(--duration-fast) var(--ease);
+}
+
+@keyframes megaMenuFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Backdrop when mega menu is open */
+mega-menu-disclosure details[open]::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  top: 100%;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: calc(var(--z-header) - 1);
+  pointer-events: none;
+}
+
+/* Responsive: hide mega-menu on mobile */
+@media (max-width: 989px) {
+  .mega-menu {
+    display: none !important;
+  }
+}

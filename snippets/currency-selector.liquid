@@ -1,0 +1,141 @@
+{%- comment -%}
+  Currency & language selector.
+  Uses Shopify Markets localization API.
+  Only renders if multiple countries or languages are available.
+
+  Usage: {% render 'currency-selector' %}
+{%- endcomment -%}
+
+{%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
+  <div class="currency-selector">
+    {%- form 'localization', id: 'CurrencySelector', class: 'currency-selector__form' -%}
+
+      {%- if localization.available_countries.size > 1 -%}
+        <div class="currency-selector__group">
+          <details class="currency-selector__disclosure">
+            <summary class="currency-selector__trigger" aria-expanded="false">
+              {%- render 'util-icon', icon: 'globe', size: 16 -%}
+              <span>{{ localization.country.name }} ({{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})</span>
+              {%- render 'util-icon', icon: 'chevron-down', size: 12 -%}
+            </summary>
+            <div class="currency-selector__panel">
+              <ul class="currency-selector__list" role="listbox">
+                {%- for country in localization.available_countries -%}
+                  <li role="option" {% if country.iso_code == localization.country.iso_code %}aria-selected="true"{% endif %}>
+                    <button
+                      type="submit"
+                      name="country_code"
+                      value="{{ country.iso_code }}"
+                      class="currency-selector__option{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}"
+                    >
+                      {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                    </button>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          </details>
+        </div>
+      {%- endif -%}
+
+      {%- if localization.available_languages.size > 1 -%}
+        <div class="currency-selector__group">
+          <details class="currency-selector__disclosure">
+            <summary class="currency-selector__trigger" aria-expanded="false">
+              <span>{{ localization.language.endonym_name }}</span>
+              {%- render 'util-icon', icon: 'chevron-down', size: 12 -%}
+            </summary>
+            <div class="currency-selector__panel">
+              <ul class="currency-selector__list" role="listbox">
+                {%- for language in localization.available_languages -%}
+                  <li role="option" {% if language.iso_code == localization.language.iso_code %}aria-selected="true"{% endif %}>
+                    <button
+                      type="submit"
+                      name="locale_code"
+                      value="{{ language.iso_code }}"
+                      class="currency-selector__option{% if language.iso_code == localization.language.iso_code %} is-active{% endif %}"
+                    >
+                      {{ language.endonym_name }}
+                    </button>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          </details>
+        </div>
+      {%- endif -%}
+
+    {%- endform -%}
+  </div>
+
+  <style>
+    .currency-selector {
+      display: inline-flex;
+      gap: var(--spacing-sm);
+    }
+    .currency-selector__form {
+      display: inline-flex;
+      gap: var(--spacing-sm);
+    }
+    .currency-selector__disclosure {
+      position: relative;
+    }
+    .currency-selector__trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-2xs);
+      font-size: var(--font-size-xs);
+      color: var(--color-text);
+      cursor: pointer;
+      list-style: none;
+      padding: var(--spacing-2xs) var(--spacing-xs);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      background: transparent;
+    }
+    .currency-selector__trigger:hover {
+      border-color: var(--color-heading);
+    }
+    .currency-selector__trigger::-webkit-details-marker {
+      display: none;
+    }
+    .currency-selector__panel {
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      min-width: 220px;
+      max-height: 300px;
+      overflow-y: auto;
+      background: var(--color-background);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: var(--z-dropdown);
+      margin-block-end: var(--spacing-2xs);
+    }
+    .currency-selector__list {
+      list-style: none;
+      padding: var(--spacing-2xs);
+      margin: 0;
+    }
+    .currency-selector__option {
+      display: block;
+      width: 100%;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border: none;
+      background: transparent;
+      text-align: left;
+      font-size: var(--font-size-xs);
+      color: var(--color-text);
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+    }
+    .currency-selector__option:hover {
+      background: var(--color-surface);
+    }
+    .currency-selector__option.is-active {
+      font-weight: 600;
+      color: var(--color-accent);
+    }
+  </style>
+{%- endif -%}

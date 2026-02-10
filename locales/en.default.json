@@ -1,0 +1,114 @@
+{
+  "general": {
+    "pagination": {
+      "page": "Page {{ page }}"
+    },
+    "view_all": "View all",
+    "products": "products",
+    "cart": {
+      "title": "Cart",
+      "empty": "Your cart is empty",
+      "continue_shopping": "Continue shopping",
+      "subtotal": "Subtotal",
+      "taxes_note": "Taxes and shipping calculated at checkout",
+      "checkout": "Checkout",
+      "view_cart": "View cart",
+      "update": "Update cart",
+      "note": "Order note",
+      "note_placeholder": "Special instructions...",
+      "quantity": "Quantity",
+      "decrease": "Decrease quantity",
+      "increase": "Increase quantity",
+      "remove": "Remove",
+      "product": "Product",
+      "total": "Total",
+      "free_shipping": "You've qualified for free shipping!"
+    },
+    "product": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "quantity": "Quantity",
+      "save": "Save",
+      "tax_note": "Tax included. Shipping calculated at checkout.",
+      "share": "Share",
+      "quick_view": "Quick view",
+      "low_stock": "Only {{ count }} left in stock",
+      "in_stock": "In stock"
+    },
+    "newsletter": {
+      "success": "Thanks for subscribing!",
+      "confirmation": "Thanks for subscribing!",
+      "email_label": "Email address",
+      "email_placeholder": "Your email address"
+    },
+    "search": {
+      "title": "Search",
+      "placeholder": "Search products...",
+      "submit": "Search",
+      "results_for": "Results for",
+      "results": "results",
+      "no_results": "No results found",
+      "start_typing": "Start typing to search..."
+    },
+    "collection": {
+      "filter": "Filter",
+      "filters": "Filters",
+      "sort_by": "Sort by",
+      "product_count": "{{ count }} products",
+      "empty": "No products found",
+      "clear_filters": "Clear filters",
+      "clear_all": "Clear all",
+      "from": "From",
+      "to": "To",
+      "all_collections": "Collections"
+    },
+    "blog": {
+      "read_more": "Read more",
+      "by_author": "By {{ author }}",
+      "comments": "Comments",
+      "leave_comment": "Leave a comment",
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "post_comment": "Post comment",
+      "comment_success": "Your comment was posted successfully.",
+      "empty": "No articles yet."
+    },
+    "404": {
+      "title": "Page not found",
+      "subtext": "The page you're looking for doesn't exist or has been moved.",
+      "link": "Back to home"
+    },
+    "footer": {
+      "rights": "All rights reserved."
+    },
+    "contact": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message",
+      "submit": "Send message",
+      "success": "Thanks for your message! We'll get back to you shortly."
+    }
+  },
+  "accessibility": {
+    "skip_to_text": "Skip to main content",
+    "close": "Close",
+    "previous": "Previous",
+    "next": "Next",
+    "play_video": "Play video",
+    "view_3d": "View 3D model",
+    "go_to_media": "Go to media",
+    "pagination": "Pagination",
+    "previous_page": "Previous page",
+    "next_page": "Next page"
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Your gift card",
+      "subtext": "Here's your gift card!",
+      "shop_link": "Continue shopping"
+    }
+  }
+}

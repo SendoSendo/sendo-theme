@@ -1,0 +1,107 @@
+/* Sendo — Deals / Flash Sale Component */
+
+.deals-section__header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  margin-block-end: var(--spacing-lg);
+}
+
+.deals-section__title-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.deals-section__title-group .section-header__title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.deals-section__title-group .section-header__title .icon {
+  color: var(--color-accent);
+}
+
+.deals-section__countdown {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.deals-section__countdown-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.deals-section__countdown .countdown__items {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.deals-section__countdown .countdown__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 44px;
+}
+
+.deals-section__countdown .countdown__number {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-heading);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.deals-section__countdown .countdown__label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.deals-section__countdown .countdown__separator {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-heading);
+  line-height: 1;
+  margin-block-end: var(--spacing-md);
+}
+
+.deals-section__view-all {
+  margin-inline-start: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  white-space: nowrap;
+}
+
+.deals-section__grid {
+  gap: var(--spacing-md);
+}
+
+.deals-section__empty {
+  text-align: center;
+  color: var(--color-text);
+  opacity: 0.6;
+  padding: var(--spacing-2xl);
+}
+
+/* Mobile adjustments */
+@media (max-width: 575px) {
+  .deals-section__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .deals-section__countdown .countdown__number {
+    font-size: var(--font-size-lg);
+  }
+
+  .deals-section__view-all {
+    margin-inline-start: 0;
+  }
+}

@@ -1,0 +1,77 @@
+/* Sendo — Tooltip Component */
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip__content {
+  position: absolute;
+  z-index: var(--z-tooltip);
+  bottom: calc(100% + 8px);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-heading);
+  color: var(--color-background);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration-fast) var(--ease), visibility var(--duration-fast) var(--ease);
+}
+
+.tooltip__content::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--color-heading);
+}
+
+.tooltip:hover .tooltip__content,
+.tooltip:focus-within .tooltip__content {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Position variants */
+.tooltip--bottom .tooltip__content {
+  bottom: auto;
+  top: calc(100% + 8px);
+}
+
+.tooltip--bottom .tooltip__content::after {
+  top: auto;
+  bottom: 100%;
+  border-top-color: transparent;
+  border-bottom-color: var(--color-heading);
+}
+
+.tooltip--start .tooltip__content {
+  inset-inline-start: 0;
+  transform: none;
+}
+
+.tooltip--start .tooltip__content::after {
+  inset-inline-start: 12px;
+  transform: none;
+}
+
+.tooltip--end .tooltip__content {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+  transform: none;
+}
+
+.tooltip--end .tooltip__content::after {
+  inset-inline-start: auto;
+  inset-inline-end: 12px;
+  transform: none;
+}

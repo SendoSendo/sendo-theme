@@ -1,0 +1,56 @@
+{%- liquid
+  assign color_scheme = section.settings.color_scheme
+-%}
+
+{%- paginate blog.articles by section.settings.articles_per_page -%}
+<section
+  class="section main-blog color-scheme-{{ color_scheme }}"
+  data-section-id="{{ section.id }}"
+  {% render 'util-section-spacing', padding_top: section.settings.padding_top, padding_bottom: section.settings.padding_bottom %}
+>
+  <div class="page-width">
+    <h1 class="main-blog__title">{{ blog.title }}</h1>
+
+    {%- if blog.articles.size > 0 -%}
+      <div class="grid grid--{{ section.settings.columns }}" data-animate-stagger>
+        {%- for article in blog.articles -%}
+          <div {% render 'util-animation', animation: 'fade-up', index: forloop.index %}>
+            {%- render 'blog-card', article: article -%}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        {%- render 'pagination', paginate: paginate -%}
+      {%- endif -%}
+    {%- else -%}
+      <p>{{ 'general.blog.empty' | t | default: 'No articles yet.' }}</p>
+    {%- endif -%}
+  </div>
+</section>
+{%- endpaginate -%}
+
+<style>
+  .main-blog__title { font-family: var(--font-heading); font-size: var(--font-size-2xl); font-weight: 600; color: var(--color-heading); margin-block-end: var(--spacing-xl); }
+</style>
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "class": "main-blog-section",
+  "settings": [
+    { "type": "range", "id": "articles_per_page", "label": "Articles per page", "min": 3, "max": 12, "step": 3, "default": 6 },
+    {
+      "type": "select", "id": "columns", "label": "Columns",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" }
+      ],
+      "default": "3"
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" }
+  ]
+}
+{% endschema %}

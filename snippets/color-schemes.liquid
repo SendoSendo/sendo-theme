@@ -1,13 +1,21 @@
-{%- for scheme_id in settings.color_schemes -%}
-  {%- assign scheme = settings.color_schemes[scheme_id] -%}
-  <style>
-    .color-{{ scheme_id }} {
-      --color-background: {{ scheme.background }};
-      --color-foreground: {{ scheme.foreground }};
-      --color-foreground-heading: {{ scheme.foreground_heading }};
-      --color-primary: {{ scheme.primary }};
-      --color-primary-hover: {{ scheme.primary_hover }};
-      --color-border: {{ scheme.border }};
+{%- comment -%}Generate CSS classes for each color scheme from settings{%- endcomment -%}
+
+<style>
+  {%- for scheme in settings.color_schemes -%}
+    {%- assign scheme_id = scheme[0] -%}
+    {%- assign s = scheme[1].settings -%}
+    .color-scheme-{{ scheme_id }} {
+      --color-background: {{ s.background }};
+      --color-text: {{ s.text }};
+      --color-heading: {{ s.heading }};
+      --color-button: {{ s.button }};
+      --color-button-label: {{ s.button_label }};
+      --color-secondary-button-label: {{ s.secondary_button_label }};
+      --color-accent: {{ s.accent }};
+      --color-shadow: {{ s.shadow }};
+      {%- if s.background_gradient != blank -%}
+        --color-background-gradient: {{ s.background_gradient }};
+      {%- endif -%}
     }
-  </style>
-{%- endfor -%}
+  {%- endfor -%}
+</style>

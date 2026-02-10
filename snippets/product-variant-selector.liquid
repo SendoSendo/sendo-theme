@@ -1,0 +1,95 @@
+{%- comment -%}
+  Variant selector. Renders option selectors (buttons or dropdowns) for product variants.
+
+  Usage:
+  {% render 'product-variant-selector',
+    product: product,
+    current_variant: current_variant,
+    block: block,
+    section_id: section.id
+  %}
+{%- endcomment -%}
+
+{%- liquid
+  assign style = block.settings.style | default: 'buttons'
+  assign enable_color_swatches = block.settings.enable_color_swatches | default: true
+-%}
+
+{%- unless product.has_only_default_variant -%}
+  <variant-selector class="product-variant-selector" data-section-id="{{ section_id }}" data-product-url="{{ product.url }}">
+    {%- for option in product.options_with_values -%}
+      {%- liquid
+        assign option_name_lower = option.name | downcase
+        assign is_color = false
+        if option_name_lower == 'color' or option_name_lower == 'colour'
+          assign is_color = true
+        endif
+      -%}
+
+      <fieldset class="product-option" data-option-index="{{ forloop.index0 }}">
+        <legend class="product-option__label">
+          {{ option.name }}
+          {%- if is_color and enable_color_swatches -%}
+            <span class="product-option__selected" data-option-selected>{{ option.selected_value }}</span>
+          {%- endif -%}
+        </legend>
+
+        {%- if style == 'dropdown' and is_color == false -%}
+          <div class="field-wrapper">
+            <select class="field__input" data-option-selector aria-label="{{ option.name }}">
+              {%- for value in option.values -%}
+                <option value="{{ value | escape }}" {% if value == option.selected_value %}selected{% endif %}>
+                  {{ value }}
+                </option>
+              {%- endfor -%}
+            </select>
+          </div>
+
+        {%- elsif is_color and enable_color_swatches -%}
+          <div class="swatch-group">
+            {%- for value in option.values -%}
+              {%- liquid
+                assign color_handle = value | handleize
+                assign swatch_color = color_handle
+              -%}
+              <label class="swatch swatch--color{% if value == option.selected_value %} is-selected{% endif %}" title="{{ value }}" data-option-value="{{ value | escape }}">
+                <input
+                  type="radio"
+                  name="{{ option.name | handleize }}-{{ section_id }}"
+                  value="{{ value | escape }}"
+                  {% if value == option.selected_value %}checked{% endif %}
+                  class="visually-hidden"
+                  data-option-input
+                >
+                <span class="swatch__color" style="background-color: {{ swatch_color }};"></span>
+              </label>
+            {%- endfor -%}
+          </div>
+
+        {%- else -%}
+          <div class="swatch-group swatch-group--text">
+            {%- for value in option.values -%}
+              <label class="swatch swatch--text{% if value == option.selected_value %} is-selected{% endif %}" data-option-value="{{ value | escape }}">
+                <input
+                  type="radio"
+                  name="{{ option.name | handleize }}-{{ section_id }}"
+                  value="{{ value | escape }}"
+                  {% if value == option.selected_value %}checked{% endif %}
+                  class="visually-hidden"
+                  data-option-input
+                >
+                <span>{{ value }}</span>
+              </label>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </fieldset>
+    {%- endfor -%}
+
+    <script type="application/json" data-variant-json>
+      {{ product.variants | json }}
+    </script>
+  </variant-selector>
+
+  <script src="{{ 'component-variant-selector.js' | asset_url }}" defer></script>
+{%- endunless -%}

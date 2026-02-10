@@ -1,0 +1,46 @@
+/* Sendo — Testimonials */
+
+.testimonial-card {
+  padding: var(--spacing-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.testimonial-card__stars {
+  display: flex;
+  gap: 2px;
+}
+
+.testimonial-card__star { color: var(--color-border); }
+.testimonial-card__star--filled { color: #f59e0b; }
+
+.testimonial-card__text {
+  font-size: var(--font-size-md);
+  line-height: 1.6;
+  color: var(--color-text);
+  margin: 0;
+  font-style: normal;
+}
+
+.testimonial-card__author {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-block-start: auto;
+}
+
+.testimonial-card__name {
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  color: var(--color-heading);
+  font-style: normal;
+}
+
+.testimonial-card__role {
+  font-size: var(--font-size-xs);
+  color: var(--color-text);
+  opacity: 0.6;
+}

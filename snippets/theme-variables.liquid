@@ -1,16 +1,26 @@
+{%- comment -%}CSS custom properties from theme settings{%- endcomment -%}
+
+{%- liquid
+  assign header_font = settings.type_header_font
+  assign body_font = settings.type_body_font
+  assign heading_scale = settings.heading_scale | divided_by: 100.0
+  assign body_scale = settings.body_font_size_scale | divided_by: 100.0
+-%}
+
 <style>
   :root {
+    --font-heading-family: {{ header_font.family }}, {{ header_font.fallback_families }};
+    --font-heading-style: {{ header_font.style }};
+    --font-heading-weight: {{ header_font.weight }};
+    --font-body-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --font-body-style: {{ body_font.style }};
+    --font-body-weight: {{ body_font.weight }};
+
+    --heading-scale: {{ heading_scale }};
+    --body-scale: {{ body_scale }};
+
     --page-width: {{ settings.page_width }}px;
-    --font-size-body: {{ settings.body_font_size }}px;
-    {%- if settings.font_heading -%}
-      --font-heading-family: {{ settings.font_heading.family }}, system-ui, sans-serif;
-      --font-heading-weight: {{ settings.font_heading.weight }};
-      --font-heading-style: {{ settings.font_heading.style }};
-    {%- endif -%}
-    {%- if settings.font_body -%}
-      --font-body-family: {{ settings.font_body.family }}, system-ui, sans-serif;
-      --font-body-weight: {{ settings.font_body.weight }};
-      --font-body-style: {{ settings.font_body.style }};
-    {%- endif -%}
+    --spacing-sections: {{ settings.spacing_sections }}px;
+    --radius: {{ settings.border_radius }}px;
   }
 </style>

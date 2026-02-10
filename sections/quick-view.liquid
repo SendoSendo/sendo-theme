@@ -1,0 +1,34 @@
+{{ 'component-modal.css' | asset_url | stylesheet_tag }}
+{{ 'component-product.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-quantity.css' | asset_url | stylesheet_tag }}
+{{ 'component-swatch.css' | asset_url | stylesheet_tag }}
+
+<modal-dialog id="QuickViewModal" class="modal" aria-label="{{ 'general.product.quick_view' | t | default: 'Quick view' }}">
+  <div class="modal__overlay" data-modal-close></div>
+  <div class="modal__container modal__container--lg">
+    <div class="modal__header">
+      <h2 class="modal__title">{{ 'general.product.quick_view' | t | default: 'Quick view' }}</h2>
+      <button class="btn--icon modal__close" data-modal-close aria-label="{{ 'accessibility.close' | t | default: 'Close' }}">
+        {%- render 'util-icon', icon: 'close' -%}
+      </button>
+    </div>
+    <div class="modal__body" id="QuickViewContent">
+      <div class="quick-view__loading">
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+  </div>
+</modal-dialog>
+
+<script src="{{ 'component-modal.js' | asset_url }}" defer></script>
+<script src="{{ 'component-quick-view.js' | asset_url }}" defer></script>
+<script src="{{ 'component-quantity.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Quick view",
+  "class": "quick-view-section",
+  "settings": []
+}
+{% endschema %}

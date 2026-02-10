@@ -1,0 +1,27 @@
+<section class="section main-404" {% render 'util-section-spacing', padding_top: 80, padding_bottom: 80 %}>
+  <div class="page-width">
+    <div class="main-404__inner text-center" {% render 'util-animation', animation: 'fade-up' %}>
+      <h1 class="main-404__title">404</h1>
+      <p class="main-404__text">{{ 'general.404.title' | t | default: "Page not found" }}</p>
+      <p class="main-404__subtext">{{ 'general.404.subtext' | t | default: "The page you're looking for doesn't exist or has been moved." }}</p>
+      <a href="{{ routes.root_url }}" class="btn btn--primary">
+        {{ 'general.404.link' | t | default: 'Back to home' }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .main-404__inner { max-width: 560px; margin: 0 auto; }
+  .main-404__title { font-family: var(--font-heading); font-size: clamp(80px, 15vw, 160px); font-weight: 700; color: var(--color-border); line-height: 1; margin: 0; }
+  .main-404__text { font-size: var(--font-size-xl); font-weight: 600; color: var(--color-heading); margin-block-end: var(--spacing-sm); }
+  .main-404__subtext { color: var(--color-text); opacity: 0.6; margin-block-end: var(--spacing-lg); }
+</style>
+
+{% schema %}
+{
+  "name": "404 page",
+  "class": "main-404-section",
+  "settings": []
+}
+{% endschema %}

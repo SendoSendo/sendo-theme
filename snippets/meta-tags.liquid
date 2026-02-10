@@ -1,5 +1,123 @@
-<title>{{ page_title }}{% if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.pagination.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
-{% if page_description %}
-  <meta name="description" content="{{ page_description | escape }}">
-{% endif %}
-<link rel="canonical" href="{{ canonical_url }}">
+{%- comment -%}Open Graph tags{%- endcomment -%}
+<meta property="og:site_name" content="{{ shop.name }}">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:title" content="{{ page_title | escape }}">
+{%- if page_description -%}
+  <meta property="og:description" content="{{ page_description | escape }}">
+{%- endif -%}
+
+{%- if request.page_type == 'product' -%}
+  <meta property="og:type" content="product">
+  <meta property="og:price:amount" content="{{ product.selected_or_first_available_variant.price | money_without_currency | strip_html }}">
+  <meta property="og:price:currency" content="{{ cart.currency.iso_code }}">
+  {%- if product.featured_image -%}
+    <meta property="og:image" content="https:{{ product.featured_image | image_url: width: 1200 }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:alt" content="{{ product.featured_image.alt | default: product.title | escape }}">
+  {%- endif -%}
+{%- elsif request.page_type == 'collection' -%}
+  <meta property="og:type" content="website">
+  {%- if collection.image -%}
+    <meta property="og:image" content="https:{{ collection.image | image_url: width: 1200 }}">
+  {%- endif -%}
+{%- elsif request.page_type == 'article' -%}
+  <meta property="og:type" content="article">
+  {%- if article.image -%}
+    <meta property="og:image" content="https:{{ article.image | image_url: width: 1200 }}">
+  {%- endif -%}
+{%- else -%}
+  <meta property="og:type" content="website">
+  {%- if settings.logo -%}
+    <meta property="og:image" content="https:{{ settings.logo | image_url: width: 1200 }}">
+  {%- endif -%}
+{%- endif -%}
+
+{%- comment -%}Twitter Card{%- endcomment -%}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ page_title | escape }}">
+{%- if page_description -%}
+  <meta name="twitter:description" content="{{ page_description | escape }}">
+{%- endif -%}
+
+{%- comment -%}Product JSON-LD structured data{%- endcomment -%}
+{%- if request.page_type == 'product' -%}
+  {%- liquid
+    assign current_variant = product.selected_or_first_available_variant
+    assign rating_value = product.metafields.reviews.rating.value.rating | default: 0
+    assign rating_count = product.metafields.reviews.rating_count.value | default: 0
+  -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "url": "{{ shop.url }}{{ product.url }}",
+      "description": {{ product.description | strip_html | truncate: 500 | json }},
+      {%- if product.featured_image -%}
+        "image": "https:{{ product.featured_image | image_url: width: 1200 }}",
+      {%- endif -%}
+      {%- if product.vendor != blank -%}
+        "brand": {
+          "@type": "Brand",
+          "name": {{ product.vendor | json }}
+        },
+      {%- endif -%}
+      {%- if current_variant.sku != blank -%}
+        "sku": {{ current_variant.sku | json }},
+      {%- endif -%}
+      {%- if current_variant.barcode != blank -%}
+        "gtin": {{ current_variant.barcode | json }},
+      {%- endif -%}
+      {%- if rating_value > 0 and rating_count > 0 -%}
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": {{ rating_value }},
+          "reviewCount": {{ rating_count }},
+          "bestRating": 5,
+          "worstRating": 1
+        },
+      {%- endif -%}
+      "offers": {
+        "@type": "Offer",
+        "url": "{{ shop.url }}{{ product.url }}",
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        "price": {{ current_variant.price | divided_by: 100.0 | json }},
+        "availability": "https://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}",
+        "seller": {
+          "@type": "Organization",
+          "name": {{ shop.name | json }}
+        }
+      }
+    }
+  </script>
+{%- endif -%}
+
+{%- comment -%}Organization JSON-LD on homepage{%- endcomment -%}
+{%- if request.page_type == 'index' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": {{ shop.name | json }},
+      "url": "{{ shop.url }}",
+      {%- if settings.logo -%}
+        "logo": "https:{{ settings.logo | image_url: width: 600 }}",
+      {%- endif -%}
+      "sameAs": [
+        {%- assign social_links = '' -%}
+        {%- if settings.social_facebook_link != blank -%}{%- assign social_links = social_links | append: settings.social_facebook_link | append: ',' -%}{%- endif -%}
+        {%- if settings.social_instagram_link != blank -%}{%- assign social_links = social_links | append: settings.social_instagram_link | append: ',' -%}{%- endif -%}
+        {%- if settings.social_twitter_link != blank -%}{%- assign social_links = social_links | append: settings.social_twitter_link | append: ',' -%}{%- endif -%}
+        {%- if settings.social_tiktok_link != blank -%}{%- assign social_links = social_links | append: settings.social_tiktok_link | append: ',' -%}{%- endif -%}
+        {%- if settings.social_youtube_link != blank -%}{%- assign social_links = social_links | append: settings.social_youtube_link | append: ',' -%}{%- endif -%}
+        {%- if settings.social_pinterest_link != blank -%}{%- assign social_links = social_links | append: settings.social_pinterest_link | append: ',' -%}{%- endif -%}
+        {%- assign social_array = social_links | split: ',' -%}
+        {%- for link in social_array -%}
+          {%- if link != blank -%}
+            {{ link | json }}{% unless forloop.last %},{% endunless %}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}

@@ -1,0 +1,19 @@
+{%- comment -%}
+  Scroll-reveal animation data attributes.
+  Usage: <div {% render 'util-animation', animation: section.settings.animation, index: forloop.index %}>
+
+  Outputs data-animate="fade-up" and optional stagger delay.
+  Requires animations.css and theme.js IntersectionObserver.
+{%- endcomment -%}
+
+{%- liquid
+  assign anim = animation | default: 'fade-up'
+  assign enabled = settings.animations_enabled | default: true
+-%}
+
+{%- if enabled and anim != 'none' -%}
+  data-animate="{{ anim }}"
+  {%- if index %}
+    style="transition-delay: {{ index | minus: 1 | times: 80 }}ms;"
+  {%- endif -%}
+{%- endif -%}

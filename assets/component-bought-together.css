@@ -1,0 +1,174 @@
+/* Sendo — Frequently Bought Together Component */
+
+.bought-together__container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin-block-start: var(--spacing-md);
+}
+
+.bought-together__products {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.bought-together__item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-background);
+  min-width: 200px;
+  flex: 1;
+  max-width: 280px;
+}
+
+.bought-together__separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bought-together__separator span {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text);
+  opacity: 0.4;
+}
+
+.bought-together__checkbox {
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.bought-together__checkbox input {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.bought-together__check-mark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-border);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--duration-fast) var(--ease), border-color var(--duration-fast) var(--ease);
+}
+
+.bought-together__checkbox input:checked + .bought-together__check-mark {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+
+.bought-together__checkbox input:not(:checked) + .bought-together__check-mark .icon {
+  display: none;
+}
+
+.bought-together__image {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.bought-together__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bought-together__info {
+  min-width: 0;
+  flex: 1;
+}
+
+.bought-together__title {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-heading);
+  text-decoration: none;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+
+a.bought-together__title:hover {
+  color: var(--color-accent);
+}
+
+.bought-together__price {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-heading);
+  margin: var(--spacing-xs) 0 0;
+}
+
+/* Summary */
+.bought-together__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding-block-start: var(--spacing-md);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.bought-together__total {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+}
+
+.bought-together__total-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+.bought-together__total-price {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-heading);
+}
+
+.bought-together__add-all {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .bought-together__products {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .bought-together__item {
+    max-width: none;
+  }
+
+  .bought-together__separator {
+    padding: 0;
+  }
+
+  .bought-together__summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

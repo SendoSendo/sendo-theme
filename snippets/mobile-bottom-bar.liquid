@@ -1,0 +1,71 @@
+{%- comment -%}
+  Mobile bottom navigation bar.
+  Shows Home, Search, Cart (with count badge), and Account.
+  Only visible on mobile via hide-above-mobile utility.
+
+  Usage: {% render 'mobile-bottom-bar' %}
+{%- endcomment -%}
+
+{{ 'component-mobile-bottom-bar.css' | asset_url | stylesheet_tag }}
+
+<nav class="mobile-bottom-bar hide-above-mobile" aria-label="{{ 'general.mobile_bar.label' | t | default: 'Mobile navigation' }}">
+  <a href="{{ routes.root_url }}" class="mobile-bottom-bar__item{% if request.page_type == 'index' %} is-active{% endif %}">
+    {%- render 'util-icon', icon: 'home', size: 22 -%}
+    <span class="mobile-bottom-bar__label">{{ 'general.mobile_bar.home' | t | default: 'Home' }}</span>
+  </a>
+
+  <button class="mobile-bottom-bar__item" data-search-trigger aria-label="{{ 'general.search.title' | t | default: 'Search' }}">
+    {%- render 'util-icon', icon: 'search', size: 22 -%}
+    <span class="mobile-bottom-bar__label">{{ 'general.mobile_bar.search' | t | default: 'Search' }}</span>
+  </button>
+
+  <button class="mobile-bottom-bar__item" data-cart-trigger aria-label="{{ 'general.cart.title' | t | default: 'Cart' }}">
+    <span class="mobile-bottom-bar__cart-icon">
+      {%- render 'util-icon', icon: 'cart', size: 22 -%}
+      <span class="mobile-bottom-bar__badge cart-count-badge{% if cart.item_count == 0 %} is-hidden{% endif %}" data-cart-count>{{ cart.item_count }}</span>
+    </span>
+    <span class="mobile-bottom-bar__label">{{ 'general.mobile_bar.cart' | t | default: 'Cart' }}</span>
+  </button>
+
+  <a href="{{ routes.account_url | default: routes.account_login_url }}" class="mobile-bottom-bar__item{% if request.page_type == 'account' or request.page_type == 'login' %} is-active{% endif %}">
+    {%- render 'util-icon', icon: 'user', size: 22 -%}
+    <span class="mobile-bottom-bar__label">{{ 'general.mobile_bar.account' | t | default: 'Account' }}</span>
+  </a>
+</nav>
+
+<script>
+  /* Wire search & cart triggers to existing drawers */
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchTrigger = document.querySelector('.mobile-bottom-bar [data-search-trigger]');
+    const cartTrigger = document.querySelector('.mobile-bottom-bar [data-cart-trigger]');
+
+    if (searchTrigger) {
+      searchTrigger.addEventListener('click', () => {
+        const searchDrawer = document.querySelector('search-drawer') || document.querySelector('[data-search-drawer]');
+        if (searchDrawer?.open) searchDrawer.open();
+        else if (searchDrawer?.show) searchDrawer.show();
+        else searchDrawer?.classList.add('is-open');
+      });
+    }
+
+    if (cartTrigger) {
+      cartTrigger.addEventListener('click', () => {
+        const cartDrawer = document.querySelector('cart-drawer') || document.querySelector('[data-cart-drawer]');
+        if (cartDrawer?.open) cartDrawer.open();
+        else if (cartDrawer?.show) cartDrawer.show();
+        else cartDrawer?.classList.add('is-open');
+      });
+    }
+
+    /* Update cart badge on cart changes */
+    if (typeof Sendo !== 'undefined' && Sendo.PubSub) {
+      Sendo.PubSub.subscribe('cart:updated', (detail) => {
+        const badge = document.querySelector('.mobile-bottom-bar__badge');
+        if (badge && detail?.item_count !== undefined) {
+          badge.textContent = detail.item_count;
+          badge.classList.toggle('is-hidden', detail.item_count === 0);
+        }
+      });
+    }
+  });
+</script>

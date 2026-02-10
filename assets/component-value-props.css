@@ -1,0 +1,83 @@
+/* Sendo — Value Propositions Component */
+
+.value-props__grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
+}
+
+.value-props__grid--dividers .value-props__item + .value-props__item {
+  border-inline-start: 1px solid var(--color-border);
+  padding-inline-start: var(--spacing-lg);
+}
+
+.value-props__item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex: 1;
+  min-width: 0;
+}
+
+.value-props__icon {
+  flex-shrink: 0;
+  color: var(--color-accent);
+}
+
+.value-props__text {
+  min-width: 0;
+}
+
+.value-props__heading {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-heading);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.value-props__description {
+  font-size: var(--font-size-xs);
+  color: var(--color-text);
+  margin: 0;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+/* Mobile: 2x2 grid */
+@media (max-width: 767px) {
+  .value-props__grid {
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+  }
+
+  .value-props__item {
+    flex: 0 0 calc(50% - var(--spacing-sm));
+  }
+
+  .value-props__grid--dividers .value-props__item + .value-props__item {
+    border-inline-start: none;
+    padding-inline-start: 0;
+  }
+
+  .value-props__grid--dividers .value-props__item:nth-child(odd):not(:first-child) {
+    border-inline-start: none;
+  }
+
+  .value-props__grid--dividers .value-props__item:nth-child(even) {
+    border-inline-start: 1px solid var(--color-border);
+    padding-inline-start: var(--spacing-md);
+  }
+}
+
+@media (max-width: 575px) {
+  .value-props__heading {
+    font-size: var(--font-size-xs);
+    white-space: normal;
+  }
+
+  .value-props__description {
+    display: none;
+  }
+}

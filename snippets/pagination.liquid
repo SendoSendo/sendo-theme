@@ -1,0 +1,42 @@
+{%- comment -%}
+  Pagination.
+  Usage: {% render 'pagination', paginate: paginate %}
+{%- endcomment -%}
+
+{%- if paginate.pages > 1 -%}
+  <nav class="pagination" role="navigation" aria-label="{{ 'accessibility.pagination' | t | default: 'Pagination' }}">
+    <ul class="pagination__list">
+      {%- if paginate.previous -%}
+        <li>
+          <a href="{{ paginate.previous.url }}" class="pagination__link pagination__link--arrow" aria-label="{{ 'accessibility.previous_page' | t | default: 'Previous page' }}">
+            {%- render 'util-icon', icon: 'chevron-left', size: 16 -%}
+          </a>
+        </li>
+      {%- endif -%}
+
+      {%- for part in paginate.parts -%}
+        {%- if part.is_link -%}
+          <li>
+            <a href="{{ part.url }}" class="pagination__link">{{ part.title }}</a>
+          </li>
+        {%- elsif part.title == paginate.current_page -%}
+          <li>
+            <span class="pagination__link pagination__link--current" aria-current="page">{{ part.title }}</span>
+          </li>
+        {%- else -%}
+          <li>
+            <span class="pagination__link pagination__link--gap">{{ part.title }}</span>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if paginate.next -%}
+        <li>
+          <a href="{{ paginate.next.url }}" class="pagination__link pagination__link--arrow" aria-label="{{ 'accessibility.next_page' | t | default: 'Next page' }}">
+            {%- render 'util-icon', icon: 'chevron-right', size: 16 -%}
+          </a>
+        </li>
+      {%- endif -%}
+    </ul>
+  </nav>
+{%- endif -%}

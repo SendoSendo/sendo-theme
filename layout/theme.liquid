@@ -1,28 +1,107 @@
 <!doctype html>
 <html
-  {% if request.design_mode %}class="shopify-design-mode"{% endif %}
+  class="no-js{% if request.design_mode %} shopify-design-mode{% endif %}"
   lang="{{ request.locale.iso_code }}"
+  dir="{{ request.locale.text_layout_strategy }}"
 >
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
     {%- render 'meta-tags' -%}
-    {{ content_for_header }}
+
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if request.page_type == 'index' -%}
+      <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    {%- endif -%}
+
+    {%- comment -%}Font preload & face declarations{%- endcomment -%}
     {%- render 'fonts' -%}
+
+    {%- comment -%}CSS custom properties from theme settings{%- endcomment -%}
     {%- render 'theme-variables' -%}
+
+    {%- comment -%}Color scheme classes{%- endcomment -%}
     {%- render 'color-schemes' -%}
+
+    {%- comment -%}Core stylesheet{%- endcomment -%}
     {{ 'base.css' | asset_url | stylesheet_tag }}
+
+    {%- comment -%}Animations (loaded globally, respects prefers-reduced-motion){%- endcomment -%}
+    {%- if settings.animations_enabled -%}
+      {{ 'animations.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+
+    {%- comment -%}RTL overrides{%- endcomment -%}
+    {%- if request.locale.text_layout_strategy == 'rtl' -%}
+      {{ 'rtl.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+
+    {%- comment -%}Button CSS used on virtually every page{%- endcomment -%}
+    {{ 'component-button.css' | asset_url | stylesheet_tag }}
+
+    {{ content_for_header }}
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+      window.Shopify = window.Shopify || {};
+      window.Shopify.routes = window.Shopify.routes || {};
+      window.Shopify.routes.root = '{{ routes.root_url }}';
+      window.Shopify.money_format = {{ shop.money_format | json }};
+      window.Shopify.locale = {{ request.locale.iso_code | json }};
+    </script>
   </head>
-  <body class="sendo-theme {% if settings.animations_enabled %}motion-ok{% endif %} {% if settings.card_hover_lift %}card-lift{% endif %}">
-    {%- render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' -%}
-    {%- section 'header' -%}
-    <main id="MainContent" class="main-content" role="main">
+
+  <body class="template-{{ template.name }}{% if template.suffix %} template-{{ template.name }}--{{ template.suffix }}{% endif %}{% if settings.show_mobile_bottom_bar %} has-mobile-bottom-bar{% endif %}">
+    <a class="skip-link visually-hidden" href="#MainContent">
+      {{ 'accessibility.skip_to_content' | t }}
+    </a>
+
+    {%- comment -%}Header group: announcement bar + header + category bar{%- endcomment -%}
+    {%- sections 'header-group' -%}
+
+    {%- if request.page_type != 'index' -%}
+      <div class="breadcrumbs-wrapper page-width">
+        {%- render 'breadcrumbs' -%}
+      </div>
+    {%- endif -%}
+
+    <main id="MainContent" class="main-content" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
-    {%- section 'footer' -%}
+
+    {%- comment -%}Footer group{%- endcomment -%}
+    {%- sections 'footer-group' -%}
+
+    {%- comment -%}Overlay group: cart drawer, quick view, search drawer{%- endcomment -%}
+    {%- sections 'overlay-group' -%}
+
+    {%- comment -%}Global overlay backdrop{%- endcomment -%}
+    <div class="overlay" data-overlay></div>
+
+    {%- comment -%}Mobile bottom navigation bar{%- endcomment -%}
+    {%- if settings.show_mobile_bottom_bar -%}
+      {%- render 'mobile-bottom-bar' -%}
+    {%- endif -%}
+
+    {%- comment -%}Core JS (deferred for performance){%- endcomment -%}
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
   </body>
 </html>

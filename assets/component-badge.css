@@ -1,0 +1,79 @@
+/* Sendo — Badge Component */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 0.25em 0.625em;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+/* Sale */
+.badge--sale {
+  background-color: var(--color-badge-sale);
+  color: #ffffff;
+}
+
+/* New / Just In */
+.badge--new {
+  background-color: var(--color-badge-new);
+  color: #ffffff;
+}
+
+/* Sold Out */
+.badge--soldout {
+  background-color: var(--color-badge-soldout);
+  color: #ffffff;
+}
+
+/* Custom badge (merchant-set color) */
+.badge--custom {
+  background-color: var(--color-accent);
+  color: #ffffff;
+}
+
+/* Outline variants */
+.badge--outline {
+  background-color: transparent;
+  border: 1px solid currentColor;
+}
+
+.badge--outline.badge--sale { color: var(--color-badge-sale); }
+.badge--outline.badge--new { color: var(--color-badge-new); }
+.badge--outline.badge--soldout { color: var(--color-badge-soldout); }
+
+/* Dot indicator (for stock, status) */
+.badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+/* Trust badge (larger, with icon) */
+.trust-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+.trust-badge__icon {
+  width: 40px;
+  height: 40px;
+  color: var(--color-accent);
+}
+
+.trust-badge__text {
+  font-weight: 500;
+  line-height: 1.3;
+}

@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "main": {
+      "type": "faq",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "color_scheme": "scheme-1"
+      },
+      "blocks": {
+        "q1": { "type": "question", "settings": { "question": "What is your return policy?", "answer": "<p>We offer a 30-day return policy on all items. Items must be unused and in original packaging.</p>" } },
+        "q2": { "type": "question", "settings": { "question": "How long does shipping take?", "answer": "<p>Standard shipping takes 5-7 business days. Express shipping is available at checkout.</p>" } },
+        "q3": { "type": "question", "settings": { "question": "Do you ship internationally?", "answer": "<p>Yes, we ship to most countries worldwide. Shipping rates and times vary by destination.</p>" } },
+        "q4": { "type": "question", "settings": { "question": "How can I track my order?", "answer": "<p>Once your order ships, you'll receive a confirmation email with a tracking number.</p>" } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4"]
+    }
+  },
+  "order": ["main"]
+}

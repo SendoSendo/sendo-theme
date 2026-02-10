@@ -1,0 +1,45 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "show_payment_icons": true,
+        "color_scheme": "scheme-1"
+      },
+      "blocks": {
+        "brand": {
+          "type": "brand",
+          "settings": {
+            "text": "Modern commerce, delivered."
+          }
+        },
+        "menu_1": {
+          "type": "menu",
+          "settings": {
+            "heading": "Quick links",
+            "menu": "main-menu"
+          }
+        },
+        "menu_2": {
+          "type": "menu",
+          "settings": {
+            "heading": "Info",
+            "menu": "footer"
+          }
+        },
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Newsletter",
+            "text": "<p>Subscribe for updates and exclusive offers.</p>",
+            "button_text": "Subscribe"
+          }
+        }
+      },
+      "block_order": ["brand", "menu_1", "menu_2", "newsletter"]
+    }
+  },
+  "order": ["footer"]
+}

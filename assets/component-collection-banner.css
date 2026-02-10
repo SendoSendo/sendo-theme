@@ -1,0 +1,61 @@
+/* Sendo — Collection Banner */
+
+.collection-banner__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.collection-banner__inner--has-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: var(--spacing-2xl) var(--spacing-lg);
+}
+
+.collection-banner__overlay {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  pointer-events: none;
+}
+
+.collection-banner__content {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+}
+
+.collection-banner__inner--has-image .collection-banner__title {
+  color: #fff;
+}
+
+.collection-banner__inner--has-image .collection-banner__description {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.collection-banner__title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-3xl);
+  font-weight: 600;
+  color: var(--color-heading);
+  margin: 0;
+}
+
+.collection-banner__description {
+  margin-block-start: var(--spacing-sm);
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+}
+
+@media (max-width: 575px) {
+  .collection-banner__title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .collection-banner__inner--has-image {
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+}
