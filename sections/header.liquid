@@ -3,6 +3,7 @@
   assign sticky = section.settings.sticky_header
   assign color_scheme = section.settings.color_scheme
   assign logo_width = settings.logo_width | default: 120
+  assign logo_width_2x = logo_width | times: 2
   assign header_layout = section.settings.header_layout | default: 'default'
 -%}
 
@@ -36,7 +37,7 @@
         {%- if settings.logo != blank -%}
           <img
             src="{{ settings.logo | image_url: width: 400 }}"
-            srcset="{{ settings.logo | image_url: width: logo_width }} 1x, {{ settings.logo | image_url: width: logo_width, scale: 2 }} 2x"
+            srcset="{{ settings.logo | image_url: width: logo_width }} 1x, {{ settings.logo | image_url: width: logo_width_2x }} 2x"
             alt="{{ settings.logo.alt | default: shop.name | escape }}"
             width="{{ logo_width }}"
             height="{{ logo_width | divided_by: settings.logo.aspect_ratio | round }}"
@@ -143,7 +144,7 @@
         {%- if settings.logo != blank -%}
           <img
             src="{{ settings.logo | image_url: width: 400 }}"
-            srcset="{{ settings.logo | image_url: width: logo_width }} 1x, {{ settings.logo | image_url: width: logo_width, scale: 2 }} 2x"
+            srcset="{{ settings.logo | image_url: width: logo_width }} 1x, {{ settings.logo | image_url: width: logo_width_2x }} 2x"
             alt="{{ settings.logo.alt | default: shop.name | escape }}"
             width="{{ logo_width }}"
             height="{{ logo_width | divided_by: settings.logo.aspect_ratio | round }}"
