@@ -13,13 +13,7 @@
         <div class="slider__slide slideshow__slide" style="min-height: {{ height }}vh;" {{ block.shopify_attributes }}>
           {%- if block.settings.image != blank -%}
             <div class="slideshow__media">
-              {%- render 'util-responsive-image',
-                image: block.settings.image,
-                sizes: '100vw',
-                widths: '720,1080,1440,1920',
-                loading: forloop.first | default: 'eager',
-                fetchpriority: forloop.first | ternary: 'high', nil
-              -%}
+              {%- render 'util-responsive-image', image: block.settings.image, sizes: '100vw', widths: '720,1080,1440,1920', loading: forloop.first, default: 'eager', fetchpriority: forloop.first, ternary: 'high' -%}
             </div>
           {%- else -%}
             <div class="slideshow__media" style="background: var(--color-surface);"></div>
@@ -136,3 +130,22 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%- render 'util-responsive-image',
+                    image: block.settings.image,
+                    sizes: '100vw',
+                    widths: '720,1080,1440,1920',
+                    loading: forloop.first | default: 'eager',
+                    fetchpriority: forloop.first | ternary: 'high', nil
+                  -%}
+  to: "{%- render 'util-responsive-image', image: block.settings.image, sizes: '100vw',
+    widths: '720,1080,1440,1920', loading: forloop.first, default: 'eager', fetchpriority:
+    forloop.first, ternary: 'high' -%}"
+  position: 715..917
+{% endcomment %}

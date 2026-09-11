@@ -32,13 +32,7 @@
             <div class="product-gallery__image{% if enable_zoom %} product-gallery__image--zoom{% endif %}"
               {% if enable_zoom %}data-zoom data-zoom-src="{{ media | image_url: width: 2000 }}"{% endif %}
             >
-              {%- render 'util-responsive-image',
-                image: media,
-                widths: '400,600,800,1000,1200',
-                sizes: '(min-width: 990px) 50vw, 100vw',
-                loading: forloop.first | ternary: 'eager', 'lazy',
-                fetchpriority: forloop.first | ternary: 'high', 'auto'
-              -%}
+              {%- render 'util-responsive-image', image: media, widths: '400,600,800,1000,1200', sizes: '(min-width: 990px) 50vw, 100vw', loading: forloop.first, ternary: 'high', fetchpriority: forloop.first -%}
             </div>
 
           {%- when 'video' -%}
@@ -127,3 +121,22 @@
 {%- if product.media.size > 0 -%}
   <script src="{{ 'component-deferred-media.js' | asset_url }}" defer></script>
 {%- endif -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%- render 'util-responsive-image',
+                    image: media,
+                    widths: '400,600,800,1000,1200',
+                    sizes: '(min-width: 990px) 50vw, 100vw',
+                    loading: forloop.first | ternary: 'eager', 'lazy',
+                    fetchpriority: forloop.first | ternary: 'high', 'auto'
+                  -%}
+  to: "{%- render 'util-responsive-image', image: media, widths: '400,600,800,1000,1200',
+    sizes: '(min-width: 990px) 50vw, 100vw', loading: forloop.first, ternary: 'high',
+    fetchpriority: forloop.first -%}"
+  position: 1330..1527
+{% endcomment %}
